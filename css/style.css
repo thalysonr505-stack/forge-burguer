@@ -468,3 +468,49 @@ body.page-leaving {
 @media (prefers-reduced-motion: reduce) {
     body { transition: none; }
 }
+
+
+/* FINAL VISUAL REFINEMENTS */
+body { animation: forge-page-enter .45s ease both; }
+@keyframes forge-page-enter { from { opacity: 0; } to { opacity: 1; } }
+
+.header-button, .hero-button {
+    min-height: 46px; padding: 0 23px; border: 1px solid var(--orange);
+    border-radius: 999px; display: inline-flex; align-items: center;
+    justify-content: center; gap: 10px; font-weight: 700;
+    letter-spacing: 1.4px; isolation: isolate;
+    transition: color .3s, background .3s, box-shadow .3s, transform .25s;
+}
+.header-button { background: var(--orange); color: #171717; }
+.header-button:hover { background: #df7440; color: #171717; box-shadow: 0 0 24px rgba(196,91,42,.35); }
+.hero-button { background: transparent; color: var(--cream); }
+.hero-button:hover { background: var(--orange); color: #fff; box-shadow: 0 0 24px rgba(196,91,42,.3); }
+
+.page-indicator {
+    position: fixed; z-index: 100; top: 50%; right: 26px;
+    transform: translateY(-50%); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px;
+    width: 58px; padding: 16px 0; border: 1px solid rgba(233,223,201,.28);
+    border-radius: 999px; background: rgba(18,18,18,.82);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.22);
+}
+.page-indicator a {
+    display: block; flex: 0 0 12px; width: 12px; height: 12px;
+    border-radius: 50%; background: #dce3f1;
+    box-shadow: 0 0 5px rgba(220,227,241,.25);
+    transition: all .25s ease;
+}
+.page-indicator a[aria-current="page"] {
+    flex-basis: 38px; width: 18px; height: 38px;
+    border-radius: 999px; background: #ff9b28;
+    box-shadow: 0 0 9px #ff6a1a, 0 0 22px rgba(255,91,24,.8);
+}
+.page-indicator a:hover:not([aria-current="page"]) { background: var(--cream); transform: scale(1.18); }
+
+@media (max-width: 768px) {
+    .header-button, .hero-button { min-height: 40px; padding: 0 16px; font-size: 9px; }
+    .page-indicator { right: 12px; width: 43px; gap: 15px; padding: 13px 0; }
+    .page-indicator a { flex-basis: 9px; width: 9px; height: 9px; }
+    .page-indicator a[aria-current="page"] { flex-basis: 31px; width: 15px; height: 31px; }
+}
