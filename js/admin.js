@@ -15,7 +15,7 @@ const labels={pending:"RECEBIDO",confirmed:"CONFIRMADO",preparing:"EM PREPARO",r
 const transitions={pending:["confirmed","cancelled"],confirmed:["preparing","cancelled"],preparing:["ready","cancelled"],ready:["out_for_delivery","delivered","cancelled"],out_for_delivery:["delivered","cancelled"]};
 let staff=null;
 let busy=false;
-if(!client){loginMessage.textContent="Serviço de autenticação indisponível.";return;}
+
 
 function message(el,text){el.textContent=text||"";}
 function showDashboard(){loginSection.classList.add("admin-hidden");dashboard.classList.remove("admin-hidden");logoutButton.classList.remove("admin-hidden");}
@@ -91,6 +91,7 @@ async function updateStatus(id,status,button){
 
 loginForm.addEventListener("submit", async event => {
  event.preventDefault();
+ if(!client){message(loginMessage,"A biblioteca de autenticação não carregou. Verifique a conexão e atualize a página.");return;}
  if (busy) return;
  const submitButton=loginForm.querySelector('button[type="submit"]');
  const email=document.getElementById("staff-email").value.trim();
@@ -105,6 +106,7 @@ loginForm.addEventListener("submit", async event => {
   if(!allowed)throw new Error(loginMessage.textContent||"Acesso não autorizado.");
   loginForm.reset();
   message(loginMessage,"");
+  busy=false;
   await loadOrders();
  }catch(error){
   message(loginMessage,error.message||"Falha ao entrar. Confira suas credenciais.");
