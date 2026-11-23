@@ -88,3 +88,48 @@ async function updateStatus(id,status,button){
   await loadOrders();
  }catch(error){message(dashboardMessage,error.message||"Não foi possível atualizar o pedido.");button.disabled=false;}
 };
+
+loginForm.addEventListener("submit", async event => {
+ event.preventDefault();
+ if (busy) return;
+ const submitButton=loginForm.querySelector('button[type="submit"]');
+ const email=document.getElementById("staff-email").value.trim();
+ const password=document.getElementById("staff-password").value;
+ if(!email||!password){message(loginMessage,"Informe e-mail e senha.");return;}
+ busy=true;submitButton.disabled=true;message(loginMessage,"Verificando acesso...");
+ try{
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  if(error)throw error;
+  if(!data.user)throw new Error("Não foi possível confirmar o usuário.");
+  const allowed=await verifyStaff();
+  if(!allowed)throw new Error(loginMessage.textContent||"Acesso não autorizado.");
+  loginForm.reset();
+  message(loginMessage,"");
+  await loadOrders();
+ }catch(error){
+  message(loginMessage,error.message||"Falha ao entrar. Confira suas credenciais.");
+ }finally{
+  busy=false;submitButton.disabled=false;
+ }
+});
+
+logoutButton.addEventListener("click",async()=>{
+ logoutButton.disabled=true;
+ try{await client.auth.signOut();staff=null;showLogin();message(loginMessage,"Sessão encerrada.");}
+ catch(error){message(dashboardMessage,error.message||"Não foi possível sair.");}
+ finally{logoutButton.disabled=false;}
+});
+
+refreshButton.addEventListener("click",loadOrders);
+statusFilter.addEventListener("change",loadOrders);
+
+(async()=>{
+ try{
+  const allowed=await verifyStaff();
+  if(allowed)await loadOrders();
+ }catch(error){
+  showLogin();
+  message(loginMessage,error.message||"Não foi possível verificar a sessão.");
+ }
+})();
+})();
