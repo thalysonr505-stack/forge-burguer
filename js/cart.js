@@ -27,20 +27,42 @@
     countEl.textContent=quantity();countEl.hidden=quantity()===0;
     subtotalEl.textContent=money(total());
     const entries=Object.entries(cart).filter(([slug,qty])=>products[slug]&&Number.isInteger(qty)&&qty>0);
-    if(!entries.length){itemsEl.innerHTML='<p class="cart-empty">Your bag is waiting. Add a Forge creation to begin.</p>';return;}
-    itemsEl.innerHTML=entries.map(([slug,qty])=>{
+    itemsEl.replaceChildren();
+    if(!entries.length){
+      const empty=document.createElement("p");
+      empty.className="cart-empty";
+      empty.textContent="Your bag is waiting. Add a Forge creation to begin.";
+      itemsEl.appendChild(empty);
+      return;
+    }
+    entries.forEach(([slug,qty])=>{
       const p=products[slug];
-      return '<article class="cart-line"><div class="cart-line-copy"><strong>'+p.name+'</strong><span>'+money(p.price_cents)+' each</span></div><div class="cart-controls"><button type="button" data-quantity="-1" data-id="'+slug+'" aria-label="Remove one '+p.name+'">−</button><span>'+qty+'</span><button type="button" data-quantity="1" data-id="'+slug+'" aria-label="Add one '+p.name+'">+</button></div><strong class="cart-line-total">'+money(p.price_cents*qty)+'</strong></article>';
-    }).join("");
+      const line=document.createElement("article");line.className="cart-line";
+      const copy=document.createElement("div");copy.className="cart-line-copy";
+      const name=document.createElement("strong");name.textContent=p.name;
+      const unit=document.createElement("span");unit.textContent=money(p.price_cents)+" each";
+      copy.append(name,unit);
+      const controls=document.createElement("div");controls.className="cart-controls";
+      const remove=document.createElement("button");remove.type="button";remove.dataset.quantity="-1";remove.dataset.id=slug;remove.setAttribute("aria-label","Remove one "+p.name);remove.textContent="−";
+      const amount=document.createElement("span");amount.textContent=String(qty);
+      const add=document.createElement("button");add.type="button";add.dataset.quantity="1";add.dataset.id=slug;add.setAttribute("aria-label","Add one "+p.name);add.textContent="+";
+      controls.append(remove,amount,add);
+      const lineTotal=document.createElement("strong");lineTotal.className="cart-line-total";lineTotal.textContent=money(p.price_cents*qty);
+      line.append(copy,controls,lineTotal);itemsEl.appendChild(line);
+    });
   };
   const open=()=>{panel.classList.add("is-open");panel.setAttribute("aria-hidden","false");document.body.classList.add("cart-is-open");panel.querySelector(".cart-close").focus();};
   const close=()=>{panel.classList.remove("is-open");panel.setAttribute("aria-hidden","true");document.body.classList.remove("cart-is-open");document.querySelector(".cart-launcher").focus();};
   if(client){
     const {data,error}=await client.from("products").select("slug,name,price_cents,is_available");
     if(!error) for(const p of data||[]) products[p.slug]=p;
-    else console.error("FORGE cart catalog:",error.message);
+    else {
+      console.error("FORGE cart catalog:",error.message);
+      document.querySelectorAll("[data-product]").forEach(button=>{button.disabled=true;});
+      showToast("MENU TEMPORARILY UNAVAILABLE");
+    }
   }
-  if(!Object.keys(products).length){
+  if(!client){
     products={
       original:{name:"THE ORIGINAL",price_cents:2990,is_available:true},
       "double-forge":{name:"DOUBLE FORGE",price_cents:3990,is_available:true},
