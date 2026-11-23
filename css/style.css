@@ -102,3 +102,15 @@ a:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
 .cart-toast.is-visible{opacity:1;transform:translateY(0)}
 body.cart-is-open{overflow:hidden}
 @media(max-width:768px){.cart-launcher{right:14px;bottom:78px;min-height:48px;padding:0 15px}.cart-toast{right:14px;bottom:136px}.cart-sheet{width:100%;border-left:0}}
+
+
+/* Guest checkout form */
+.checkout-form{display:grid;gap:14px;padding:26px 0 8px;border-top:1px solid rgba(233,223,201,.15)}
+.checkout-form h3{font-size:22px;letter-spacing:-.8px}.checkout-form h3 span{color:var(--orange)}
+.checkout-form label{display:grid;gap:7px;color:#aaa;font-size:9px;font-weight:700;letter-spacing:1.2px}
+.checkout-form input,.checkout-form select,.checkout-form textarea{width:100%;min-height:44px;padding:12px;border:1px solid rgba(233,223,201,.2);border-radius:0;background:#242424;color:var(--cream);font:inherit;font-size:12px;letter-spacing:0;outline:none}
+.checkout-form textarea{resize:vertical}.checkout-form input:focus,.checkout-form select:focus,.checkout-form textarea:focus{border-color:var(--orange)}
+.checkout-form [hidden]{display:none!important}
+.checkout-message{min-height:18px;color:#f2a17d;font-size:11px;line-height:1.5}
+.cart-checkout:enabled{background:var(--orange);color:#171717;cursor:pointer}
+.cart-checkout:disabled{opacity:.65;cursor:wait}
