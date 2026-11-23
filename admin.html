@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171717">
+<meta name="robots" content="noindex,nofollow">
+<title>FORGE® — Painel interno</title>
+<link rel="stylesheet" href="css/style.css?v=20261123f">
+<link rel="stylesheet" href="css/responsive.css?v=20261123f">
+<style>
+.admin-page{min-height:100vh;background:#171717;color:#e9dfc9;padding:28px 5% 60px}
+.admin-wrap{width:min(1180px,100%);margin:auto}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid #39332e;padding-bottom:20px}
+.admin-brand{font-size:13px;letter-spacing:4px;color:#c45b2a}.admin-title{font-size:clamp(32px,6vw,54px);letter-spacing:-.06em;margin:34px 0 8px}.admin-sub{color:#aaa;font-size:13px;line-height:1.6}
+.admin-card{background:#201e1c;border:1px solid #39332e;padding:clamp(18px,4vw,30px);margin-top:24px}
+.admin-form{display:grid;gap:12px;max-width:440px}.admin-form label{font-size:11px;letter-spacing:1px;color:#c8bca8}.admin-form input,.admin-filter select,.order-card select{width:100%;background:#171717;color:#eee;border:1px solid #51463d;padding:13px;font:inherit}
+.admin-btn{border:0;background:#c45b2a;color:#fff;padding:14px 18px;font-weight:800;letter-spacing:1px;cursor:pointer}.admin-btn:disabled{opacity:.5;cursor:not-allowed}
+.admin-message{font-size:13px;color:#f2a17d;min-height:18px}.admin-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:25px 0}.admin-filter{display:flex;gap:10px;align-items:center}.admin-filter select{width:auto;min-width:170px}
+.order-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}.order-card{background:#211f1d;border:1px solid #443b34;padding:18px}.order-head{display:flex;justify-content:space-between;gap:12px}.order-number{color:#c45b2a;font-weight:800;letter-spacing:1px}.order-status{font-size:10px;letter-spacing:1px;color:#e9dfc9}.order-meta{color:#aaa;font-size:12px;line-height:1.7;margin:12px 0}.order-items{border-top:1px solid #39332e;padding-top:10px;font-size:12px;line-height:1.8}.order-total{font-weight:800;margin-top:12px}.order-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:14px}.admin-hidden{display:none!important}
+@media(max-width:600px){.admin-page{padding:20px 16px 45px}.admin-top{align-items:flex-start}.admin-filter{width:100%}.admin-filter select{flex:1}.order-actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="admin-page"><div class="admin-wrap">
+<header class="admin-top"><div class="admin-brand">FORGE® BURGER <span style="color:#777">/ OPERATIONS</span></div><button id="logout-button" class="admin-btn admin-hidden" type="button">SAIR</button></header>
+<section id="login-section" class="admin-card">
+<h1 class="admin-title">STAFF<br>ACCESS<span style="color:#c45b2a">.</span></h1>
+<p class="admin-sub">Acesso exclusivo à equipe autorizada da FORGE. Não existe cadastro público.</p>
+<form id="login-form" class="admin-form">
+<label for="staff-email">E-MAIL</label><input id="staff-email" name="email" type="email" autocomplete="username" required maxlength="254">
+<label for="staff-password">SENHA</label><input id="staff-password" name="password" type="password" autocomplete="current-password" required>
+<button class="admin-btn" type="submit">ENTRAR NO PAINEL</button><p id="login-message" class="admin-message" role="status"></p>
+</form></section>
+<section id="dashboard-section" class="admin-hidden">
+<h1 class="admin-title">ORDER<br>CONTROL<span style="color:#c45b2a">.</span></h1>
+<p id="staff-greeting" class="admin-sub">Painel operacional</p>
+<div class="admin-toolbar"><strong>Pedidos recebidos</strong><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
+<p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid"></div>
+</section>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=1"></script>
+</body></html>
