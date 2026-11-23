@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171717">
 <meta name="robots" content="noindex,nofollow">
 <title>FORGE® — Painel interno</title>
-<link rel="stylesheet" href="css/style.css?v=20261123k">
+<link rel="stylesheet" href="css/style.css?v=20261123m">
 <link rel="stylesheet" href="css/responsive.css?v=20261123k">
 <style>
 .admin-page{min-height:100vh;background:#171717;color:#e9dfc9;padding:28px 5% 60px}
@@ -75,6 +75,12 @@
  .admin-filter{grid-template-columns:minmax(0,1fr)}
  #refresh-button{width:100%}
 }
+
+
+/* Unified rounded buttons and tactile press states */
+.admin-btn{border-radius:10px!important;transition:background .2s,transform .16s,box-shadow .2s,filter .2s}
+.admin-btn:not(:disabled):active{transform:translateY(1px) scale(.97);filter:brightness(.91);box-shadow:inset 0 2px 5px rgba(0,0,0,.22)}
+.admin-btn:focus-visible{outline:2px solid #f2a17d;outline-offset:3px}
 
 </style>
 </head>
