@@ -69,15 +69,15 @@ jobs:
                   failed = True
               else:
                   print(f"PASS HTML structure: {page}")
+              page_refs_ok = True
               for ref in parser.refs:
                   target = (path.parent / ref).resolve()
                   if not target.is_file():
                       print(f"FAIL broken local reference in {page}: {ref}")
                       failed = True
-              for ref in parser.refs:
-                  if (path.parent / ref).is_file():
-                      pass
-              print(f"PASS local references: {page}")
+                      page_refs_ok = False
+              if page_refs_ok:
+                  print(f"PASS local references: {page}")
               if 'name="viewport"' not in path.read_text(encoding="utf-8"):
                   print(f"FAIL missing viewport: {page}")
                   failed = True
