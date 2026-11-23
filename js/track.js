@@ -1,18 +1,126 @@
-(async()=>{
-const client=window.forgeSupabase,params=new URLSearchParams(location.search),order=params.get("order"),token=params.get("token"),card=document.getElementById("track-card");
-const steps=["pending","confirmed","preparing","ready","out_for_delivery","delivered"];
-const labels=["ORDER RECEIVED","CONFIRMED","IN PREPARATION","READY","OUT FOR DELIVERY","DELIVERED"];
-const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v/100);
-if(!client||!order||!token){card.innerHTML='<p class="track-error">Invalid tracking link. Use the private link provided after checkout.</p>';return;}
-let refreshTimer=null;
-async function load(){
-const {data,error}=await client.rpc("get_order_tracking",{p_order_number:Number(order),p_tracking_token:token});
-if(error){card.innerHTML='<p class="track-error">Order not found or tracking code invalid. Keep your private tracking link safe.</p>';return;}
-const current=steps.indexOf(data.status),status=labels[Math.max(0,current)]||data.status.toUpperCase();
-card.innerHTML='<div class="track-number">ORDER #'+data.order_number+'</div><div class="track-status">'+status+'</div><p class="track-estimate">'+(data.estimated_minutes?'Estimated time: '+data.estimated_minutes+' minutes':'We will update your estimated time soon.')+'</p><div class="track-steps">'+steps.map((s,i)=>'<div class="track-step '+(i<=current?'done':'')+'">'+labels[i]+'</div>').join('')+'</div><div class="track-items">'+data.items.map(i=>'<div>'+i.quantity+' × '+i.name+' — '+money(i.line_total_cents)+'</div>').join('')+'</div><div class="track-total"><span>TOTAL</span><span>'+money(data.total_cents)+'</span></div>';
-if(data.status==="cancelled") card.insertAdjacentHTML("beforeend",'<p class="track-error">Please contact the restaurant about this order.</p>');
-}
-await load();
-refreshTimer=window.setInterval(load,12000);
-window.addEventListener("beforeunload",()=>{if(refreshTimer)window.clearInterval(refreshTimer);});
+(async () => {
+  "use strict";
+
+  const client = window.forgeSupabase;
+  const params = new URLSearchParams(window.location.search);
+  const order = params.get("order");
+  const token = params.get("token");
+  const card = document.getElementById("track-card");
+
+  const steps = [
+    ["pending", "ORDER RECEIVED"],
+    ["confirmed", "CONFIRMED"],
+    ["preparing", "IN PREPARATION"],
+    ["ready", "READY"],
+    ["out_for_delivery", "OUT FOR DELIVERY"],
+    ["delivered", "DELIVERED"]
+  ];
+  const money = value => new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  }).format(value / 100);
+
+  if (!card) return;
+
+  const showMessage = (message, isError = false) => {
+    card.replaceChildren();
+    const paragraph = document.createElement("p");
+    paragraph.className = isError ? "track-error" : "track-estimate";
+    paragraph.textContent = message;
+    card.appendChild(paragraph);
+  };
+
+  if (!client || !order || !/^\d+$/.test(order) || !token || !/^[a-f0-9]{48}$/i.test(token)) {
+    showMessage("Link de acompanhamento inválido. Utilize o link privado recebido após o pedido.", true);
+    return;
+  }
+
+  let refreshTimer = null;
+  let stopped = false;
+  let loading = false;
+
+  function stopPolling() {
+    stopped = true;
+    if (refreshTimer) window.clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+
+  function appendText(parent, tag, className, value) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    element.textContent = value;
+    parent.appendChild(element);
+    return element;
+  }
+
+  function render(data) {
+    card.replaceChildren();
+
+    appendText(card, "div", "track-number", "ORDER #" + data.order_number);
+
+    if (data.status === "cancelled") {
+      appendText(card, "div", "track-status", "ORDER CANCELLED");
+      appendText(card, "p", "track-error", "Este pedido foi cancelado. Entre em contato com a equipe da FORGE para obter mais informações.");
+    } else {
+      const current = steps.findIndex(([key]) => key === data.status);
+      const label = current >= 0 ? steps[current][1] : "STATUS UPDATE";
+      appendText(card, "div", "track-status", label);
+
+      const estimate = data.estimated_minutes
+        ? "Tempo estimado: " + data.estimated_minutes + " minutos"
+        : "Atualizaremos a previsão assim que possível.";
+      appendText(card, "p", "track-estimate", estimate);
+
+      const progress = document.createElement("div");
+      progress.className = "track-steps";
+      steps.forEach(([key, stepLabel], index) => {
+        const step = document.createElement("div");
+        step.className = "track-step" + (current >= 0 && index <= current ? " done" : "");
+        step.textContent = stepLabel;
+        progress.appendChild(step);
+      });
+      card.appendChild(progress);
+    }
+
+    const items = document.createElement("div");
+    items.className = "track-items";
+    (Array.isArray(data.items) ? data.items : []).forEach(item => {
+      appendText(items, "div", "", item.quantity + " × " + item.name + " — " + money(item.line_total_cents));
+    });
+    card.appendChild(items);
+
+    const total = document.createElement("div");
+    total.className = "track-total";
+    appendText(total, "span", "", "TOTAL");
+    appendText(total, "span", "", money(data.total_cents));
+    card.appendChild(total);
+  }
+
+  async function load() {
+    if (loading || stopped) return;
+    loading = true;
+    try {
+      const { data, error } = await client.rpc("get_order_tracking", {
+        p_order_number: Number(order),
+        p_tracking_token: token
+      });
+
+      if (error || !data || typeof data !== "object") {
+        showMessage("Pedido não encontrado ou código de acompanhamento inválido. Mantenha seu link privado.", true);
+        stopPolling();
+        return;
+      }
+
+      render(data);
+      if (["delivered", "cancelled"].includes(data.status)) stopPolling();
+    } catch (_) {
+      showMessage("Não foi possível atualizar o pedido. Verifique sua conexão e tente novamente.", true);
+    } finally {
+      loading = false;
+    }
+  }
+
+  await load();
+  if (!stopped) refreshTimer = window.setInterval(load, 12000);
+  window.addEventListener("pagehide", stopPolling, { once: true });
 })();
