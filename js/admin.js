@@ -42,7 +42,7 @@ function renderOrders(orders){
   const card=document.createElement("article");card.className="order-card";
   const head=document.createElement("div");head.className="order-head";
   const number=document.createElement("strong");number.className="order-number";number.textContent="PEDIDO #"+order.order_number;
-  const status=document.createElement("span");status.className="order-status";status.textContent=labels[order.status]||order.status.toUpperCase();
+  const status=document.createElement("span");status.className="order-status status-"+order.status;status.textContent=labels[order.status]||order.status.toUpperCase();
   head.append(number,status);card.appendChild(head);
   const meta=document.createElement("div");meta.className="order-meta";
   const date=new Date(order.created_at).toLocaleString("pt-BR");
@@ -58,8 +58,9 @@ function renderOrders(orders){
    const actions=document.createElement("div");actions.className="order-actions";
    const select=document.createElement("select");select.setAttribute("aria-label","Novo status do pedido "+order.order_number);
    next.forEach(value=>{const option=document.createElement("option");option.value=value;option.textContent=labels[value];select.appendChild(option);});
-   const update=document.createElement("button");update.type="button";update.className="admin-btn";update.textContent="ATUALIZAR STATUS";
+   const update=document.createElement("button");update.type="button";update.className="admin-btn";update.textContent="SALVAR STATUS";
    update.addEventListener("click",()=>updateStatus(order.id,select.value,update));
+   select.addEventListener("change",()=>{update.textContent="SALVAR "+(labels[select.value]||"STATUS");});
    actions.append(select,update);card.appendChild(actions);
   }
   ordersGrid.appendChild(card);
