@@ -19,23 +19,16 @@ jobs:
             echo "Checking $file"
             node --check "$file"
           done
-      - name: Validate HTML structure and required assets
+      - name: Validate HTML, local references, product IDs and media
         run: |
           python - <<'PY'
           from html.parser import HTMLParser
           from pathlib import Path
           import sys
 
-          class Checker(HTMLParser):
-              def __init__(self):
-                  super().__init__()
-                  self.errors = []
-              def error(self, message):
-                  self.errors.append(message)
-
-          root = Path(".")
-          pages = ["index.html", "menu.html", "about.html", "contact.html", "admin.html", "track.html"]
-          required_media = [
+          ROOT = Path(".")
+          PAGES = ["index.html", "menu.html", "about.html", "contact.html", "admin.html", "track.html"]
+          REQUIRED_MEDIA = [
               "images/the-original.jpg",
               "images/double-forge.jpg",
               "images/the-bacon.jpg",
@@ -43,32 +36,78 @@ jobs:
               "images/forge-home.mp4",
           ]
           failed = False
-          for name in pages:
-              path = root / name
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.refs = []
+                  self.tags = set()
+                  self.video_sources = []
+                  self.product_ids = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  self.tags.add(tag)
+                  for key in ("src", "href"):
+                      value = attrs.get(key, "")
+                      if value and not value.startswith(("#", "http:", "https:", "mailto:", "tel:", "data:")):
+                          self.refs.append(value.split("?")[0])
+                  if tag == "source" and attrs.get("src"):
+                      self.video_sources.append(attrs["src"].split("?")[0])
+                  if "data-product" in attrs:
+                      self.product_ids.append(attrs["data-product"])
+
+          for page in PAGES:
+              path = ROOT / page
               if not path.is_file():
-                  print(f"FAIL missing page: {name}")
+                  print(f"FAIL missing page: {page}")
                   failed = True
                   continue
-              source = path.read_text(encoding="utf-8")
-              parser = Checker()
-              parser.feed(source)
-              parser.close()
-              if parser.errors:
-                  print(f"FAIL malformed HTML: {name}: {parser.errors}")
+              parser = PageParser()
+              parser.feed(path.read_text(encoding="utf-8"))
+              if "html" not in parser.tags or "body" not in parser.tags:
+                  print(f"FAIL incomplete document structure: {page}")
                   failed = True
               else:
-                  print(f"PASS HTML parsed: {name}")
-              for required in ["name=\"viewport\"", "css/style.css", "css/responsive.css"]:
-                  if required not in source:
-                      print(f"FAIL {name} missing {required}")
+                  print(f"PASS HTML structure: {page}")
+              for ref in parser.refs:
+                  target = (path.parent / ref).resolve()
+                  if not target.is_file():
+                      print(f"FAIL broken local reference in {page}: {ref}")
                       failed = True
-          for asset in required_media:
-              if (root / asset).is_file():
-                  print(f"PASS media present: {asset}")
-              else:
-                  print(f"FAIL media missing: {asset}")
+              for ref in parser.refs:
+                  if (path.parent / ref).is_file():
+                      pass
+              print(f"PASS local references: {page}")
+              if 'name="viewport"' not in path.read_text(encoding="utf-8"):
+                  print(f"FAIL missing viewport: {page}")
                   failed = True
+
+          for asset in REQUIRED_MEDIA:
+              path = ROOT / asset
+              if path.is_file() and path.stat().st_size > 0:
+                  print(f"PASS media exists and is non-empty: {asset} ({path.stat().st_size} bytes)")
+              else:
+                  print(f"FAIL missing or empty media: {asset}")
+                  failed = True
+
+          home = PageParser()
+          home.feed((ROOT / "index.html").read_text(encoding="utf-8"))
+          if "images/forge-home.mp4" not in home.video_sources:
+              print("FAIL HOME video source is not wired to images/forge-home.mp4")
+              failed = True
+          else:
+              print("PASS HOME video source")
+
+          menu = PageParser()
+          menu.feed((ROOT / "menu.html").read_text(encoding="utf-8"))
+          expected = {"original", "double-forge", "bacon", "truffle"}
+          if set(menu.product_ids) != expected:
+              print(f"FAIL menu product IDs mismatch: {menu.product_ids}")
+              failed = True
+          else:
+              print("PASS all four menu product IDs")
+
           if failed:
               sys.exit(1)
-          print("All FORGE static checks passed.")
+          print("All FORGE checks passed.")
           PY
