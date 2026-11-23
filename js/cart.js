@@ -26,6 +26,8 @@
   const render=()=>{
     countEl.textContent=quantity();countEl.hidden=quantity()===0;
     subtotalEl.textContent=money(total());
+    const checkoutButton=document.getElementById("checkout-submit");
+    if(checkoutButton&&!checkoutButton.dataset.submitting)checkoutButton.disabled=quantity()===0;
     const entries=Object.entries(cart).filter(([slug,qty])=>products[slug]&&Number.isInteger(qty)&&qty>0);
     itemsEl.replaceChildren();
     if(!entries.length){
@@ -95,7 +97,7 @@
     if(!client){message.textContent="Order service unavailable. Please try again shortly.";return;}
     const items=Object.entries(cart).filter(([slug,qty])=>products[slug]&&qty>0).map(([slug,quantity])=>({slug,quantity}));
     if(!items.length){message.textContent="Add an item before placing your order.";return;}
-    submit.disabled=true;submit.textContent="SENDING ORDER...";message.textContent="";
+    submit.disabled=true;submit.dataset.submitting="true";submit.textContent="SENDING ORDER...";message.textContent="";
     const f=new FormData(checkoutForm);
     const payload={p_customer_name:f.get("customer_name"),p_customer_phone:f.get("customer_phone"),p_fulfillment:f.get("fulfillment"),p_payment_method:f.get("payment_method"),p_items:items,p_delivery_address:f.get("delivery_address")||null,p_delivery_reference:f.get("delivery_reference")||null,p_table_code:f.get("table_code")||null,p_notes:f.get("notes")||null};
     try{
@@ -107,7 +109,7 @@
       url.searchParams.set("order",result.order_number);url.searchParams.set("token",result.tracking_token);
       message.textContent="Order #"+result.order_number+" placed. Opening tracking...";
       window.location.href=url.toString();
-    }catch(error){message.textContent=error.message||"Could not place order. Please try again.";submit.disabled=false;submit.textContent="PLACE ORDER";}
+    }catch(error){message.textContent=error.message||"Could not place order. Please try again.";delete submit.dataset.submitting;submit.disabled=quantity()===0;submit.textContent="PLACE ORDER";}
   });
   document.addEventListener("click",event=>{
     const add=event.target.closest("[data-product]");
