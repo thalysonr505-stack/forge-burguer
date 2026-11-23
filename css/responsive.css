@@ -1,44 +1,52 @@
-@media(max-width:900px){
-.header{gap:16px;padding-right:4%;padding-left:4%}
-.nav{gap:16px}.nav a{font-size:9px;letter-spacing:1.4px}
-.header-button{min-height:42px;padding:0 15px;font-size:9px}
-.hero{padding-right:12%;padding-left:7%}
-.menu-section{padding-right:7%;padding-left:7%}
+/* FORGE BURGER — responsive system */
+@media(max-width:1024px){
+  .header{gap:18px;padding-right:4%;padding-left:4%}
+  .nav{gap:18px}
+  .nav a{font-size:9px;letter-spacing:1.4px}
+  .hero{padding-right:9%;padding-left:8%}
+  .menu-section{padding-right:7%;padding-left:7%}
 }
-@media(max-width:680px){
-.header{min-height:108px;height:auto;padding:13px 5% 11px;display:grid;grid-template-columns:1fr auto;row-gap:12px}
-.logo{font-size:21px}.header-button{min-height:39px;padding:0 13px;font-size:8px;white-space:nowrap}
-.nav{grid-column:1/-1;order:3;display:flex;width:100%;justify-content:space-between;gap:8px;padding-top:9px;border-top:1px solid rgba(233,223,201,.09)}
-.nav a{padding:5px 0;font-size:8px;letter-spacing:1px}
-.hero{min-height:590px;height:calc(100svh - 108px);max-height:none;padding:50px 7% 105px;background:radial-gradient(ellipse at 78% 48%,rgba(196,91,42,.2),transparent 48%),linear-gradient(135deg,#171717 0%,#1c1917 55%,#171717 100%)}
-.hero h1{margin:24px 0;font-size:clamp(54px,13vw,88px);letter-spacing:-.07em;line-height:.92}
-.hero-content p{max-width:290px;font-size:13px}
-.forge-page-hero{padding-right:7%;padding-bottom:115px}
-.forge-page-hero h1{font-size:clamp(42px,10.5vw,72px);letter-spacing:-.065em;line-height:.98;overflow-wrap:anywhere}
-.forge-page-hero .hero-content{max-width:100%;padding-right:0}
-.forge-page-hero .eyebrow{font-size:9px;letter-spacing:3px}
-.hero-bottom{bottom:22px;font-size:7px;letter-spacing:1.2px}
-.menu-section{padding:75px 6% 90px}
-.menu-heading{margin-bottom:38px}
-.menu-heading h1{font-size:clamp(46px,11vw,72px);letter-spacing:-.06em}
-.menu-grid{grid-template-columns:1fr}
-.menu-card img{height:220px}
-.menu-number{margin:0 18px 16px}
-.menu-info{padding:0 18px}
-.menu-info h2{font-size:19px}
-.menu-info p{font-size:12px}
-.page-indicator{top:auto;right:50%;bottom:12px;left:auto;width:min(330px,calc(100% - 32px));padding:7px 9px;transform:translateX(50%);flex-direction:row;justify-content:space-around;gap:4px;border-radius:18px;background:rgba(18,18,18,.94)}
-.page-indicator a{min-height:52px;flex:1;gap:3px;border-radius:12px}
-.indicator-number{font-size:7px}
-.indicator-icon{width:18px;height:18px}
-.indicator-icon svg{width:17px;height:17px}
-.indicator-label{font-size:6px;letter-spacing:.5px}
-.menu-footer{padding-bottom:85px}
+@media(max-width:768px){
+  .header{min-height:108px;height:auto;padding:13px 5% 11px;display:grid;grid-template-columns:1fr auto;row-gap:12px}
+  .logo{font-size:21px}
+  .header-button{min-height:39px;padding:0 13px;font-size:8px;white-space:nowrap}
+  .nav{grid-column:1/-1;order:3;display:flex;width:100%;justify-content:space-between;gap:8px;padding-top:9px;border-top:1px solid rgba(233,223,201,.09)}
+  .nav a{padding:5px 0;font-size:8px;letter-spacing:1px}
+  .hero{min-height:590px;height:calc(100svh - 108px);max-height:none;padding:50px 7% 112px;background:radial-gradient(ellipse at 78% 48%,rgba(196,91,42,.2),transparent 48%),linear-gradient(135deg,#171717 0%,#1c1917 55%,#171717 100%)}
+  .hero h1{margin:24px 0;font-size:clamp(54px,13vw,88px);letter-spacing:-.07em;line-height:.92}
+  .hero-content p{max-width:290px;font-size:13px}
+  .forge-page-hero{padding-right:7%;padding-bottom:125px}
+  .forge-page-hero h1{max-width:100%;font-size:clamp(42px,9.5vw,72px);letter-spacing:-.065em;line-height:.98;overflow-wrap:anywhere}
+  .forge-page-hero .hero-content{max-width:100%;padding-right:0}
+  .forge-page-hero .eyebrow{font-size:9px;letter-spacing:3px}
+  .hero-bottom{bottom:86px;left:6%;right:6%;font-size:7px;letter-spacing:1.1px}
+  .menu-section{padding:72px 6% 88px}
+  .menu-heading{margin-bottom:38px}
+  .menu-heading h1{font-size:clamp(46px,10vw,72px);letter-spacing:-.06em}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-card img{height:clamp(190px,48vw,280px)}
+  .menu-number{margin:0 18px 16px}
+  .menu-info{padding:0 18px}
+  .menu-info h2{font-size:19px}
+  .menu-info p{font-size:12px}
+  .page-indicator{top:auto;right:50%;bottom:12px;left:auto;width:min(340px,calc(100% - 28px));padding:7px 9px;transform:translateX(50%);flex-direction:row;justify-content:space-around;gap:4px;border-radius:18px;background:rgba(18,18,18,.96);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+  .page-indicator a{min-height:50px;flex:1;gap:3px;border-radius:12px}
+  .indicator-number{font-size:7px}
+  .indicator-icon{width:18px;height:18px}
+  .indicator-icon svg{width:17px;height:17px}
+  .indicator-label{font-size:6px;letter-spacing:.5px}
+  .menu-footer{min-height:105px;padding:25px 6% 86px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 }
-@media(max-width:360px){
-.header{padding-right:4%;padding-left:4%}
-.nav a{font-size:7px;letter-spacing:.7px}
-.header-button{padding:0 10px;font-size:7px}
-.forge-page-hero h1{font-size:clamp(38px,10vw,48px)}
-.page-indicator{width:calc(100% - 24px)}
+@media(max-width:420px){
+  .header{padding-right:4%;padding-left:4%}
+  .nav a{font-size:7px;letter-spacing:.7px}
+  .header-button{padding:0 10px;font-size:7px}
+  .hero h1{font-size:clamp(50px,13vw,66px)}
+  .forge-page-hero h1{font-size:clamp(37px,10vw,48px)}
+  .hero-bottom{gap:10px;font-size:6px;letter-spacing:.7px}
+  .page-indicator{width:calc(100% - 24px)}
+  .menu-footer{font-size:7px;letter-spacing:1px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
