@@ -82,8 +82,20 @@
         <header class="cart-head"><div><span class="eyebrow">YOUR SELECTION</span><h2 id="cart-title">YOUR ORDER<span>.</span></h2></div><button class="cart-close" type="button" data-cart-close aria-label="Close cart">×</button></header>
         <div class="cart-items" id="cart-items"><p class="cart-empty">Your bag is waiting. Add a Forge creation to begin.</p></div>
         <div class="cart-summary"><span>SUBTOTAL</span><strong id="cart-subtotal">R$ 0,00</strong></div>
-        <p class="cart-note">Delivery and payment options will be confirmed at checkout.</p>
-        <button class="cart-checkout" type="button" disabled>CHECKOUT — COMING NEXT</button>
+        
+        <form class="checkout-form" id="checkout-form">
+          <h3>CHECKOUT<span>.</span></h3>
+          <label>YOUR NAME<input name="customer_name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Full name"></label>
+          <label>PHONE / WHATSAPP<input name="customer_phone" type="tel" autocomplete="tel" minlength="10" maxlength="20" required placeholder="(85) 99999-9999"></label>
+          <label>ORDER TYPE<select name="fulfillment" id="fulfillment" required><option value="delivery">Delivery</option><option value="pickup">Pickup</option><option value="dine_in">Dine in</option></select></label>
+          <label id="delivery-address-field">DELIVERY ADDRESS<textarea name="delivery_address" autocomplete="street-address" rows="2" placeholder="Street, number, neighborhood and city"></textarea></label>
+          <label id="delivery-reference-field">REFERENCE / COMPLEMENT<input name="delivery_reference" maxlength="180" placeholder="Apartment, landmark (optional)"></label>
+          <label id="table-code-field" hidden>TABLE CODE<input name="table_code" maxlength="30" placeholder="Table number or QR code"></label>
+          <label>PAYMENT<select name="payment_method" required><option value="pix">PIX</option><option value="cash">Cash</option><option value="card_on_delivery">Card on delivery</option></select></label>
+          <label>NOTES<textarea name="notes" rows="2" maxlength="500" placeholder="Allergies or special instructions (optional)"></textarea></label>
+          <p class="checkout-message" id="checkout-message" role="status" aria-live="polite"></p>
+          <button class="cart-checkout" id="checkout-submit" type="submit">PLACE ORDER</button>
+        </form>
       </section>
     </aside>
     <div class="cart-toast" id="cart-toast" role="status" aria-live="polite"></div>
@@ -92,6 +104,6 @@
     <script src="js/supabase-client.js?v=1" defer></script>
     <script src="js/menu-products.js?v=1" defer></script>
     <script src="js/main.js" defer></script>
-    <script src="js/cart.js?v=2" defer></script>
+    <script src="js/cart.js?v=3" defer></script>
 </body>
 </html>
