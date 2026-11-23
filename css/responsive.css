@@ -6,6 +6,11 @@
   .hero{padding-right:9%;padding-left:8%}
   .menu-section{padding-right:7%;padding-left:7%}
 }
+@media(max-width:900px){
+  .page-indicator{top:auto;right:50%;bottom:12px;left:auto;width:min(340px,calc(100% - 28px));padding:7px 9px;transform:translateX(50%);flex-direction:row;justify-content:space-around;gap:4px;border-radius:18px;background:rgba(18,18,18,.96);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+  .page-indicator a{min-height:50px;flex:1;gap:3px;border-radius:12px}
+  .indicator-number{font-size:7px}.indicator-icon{width:18px;height:18px}.indicator-icon svg{width:17px;height:17px}.indicator-label{font-size:6px;letter-spacing:.5px}
+}
 @media(max-width:768px){
   .header{min-height:108px;height:auto;padding:13px 5% 11px;display:grid;grid-template-columns:1fr auto;row-gap:12px}
   .logo{font-size:21px}
