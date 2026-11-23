@@ -50,6 +50,38 @@
   }
   for(const slug of Object.keys(cart)) if(!products[slug]||!products[slug].is_available||!Number.isInteger(cart[slug])||cart[slug]<1) delete cart[slug];
   persist();render();
+  const checkoutForm=document.getElementById("checkout-form");
+  const fulfillmentSelect=document.getElementById("fulfillment");
+  const syncFulfillment=()=>{
+    const mode=fulfillmentSelect.value;
+    document.getElementById("delivery-address-field").hidden=mode!=="delivery";
+    document.getElementById("delivery-reference-field").hidden=mode!=="delivery";
+    document.getElementById("table-code-field").hidden=mode!=="dine_in";
+    checkoutForm.elements.delivery_address.required=mode==="delivery";
+    checkoutForm.elements.table_code.required=mode==="dine_in";
+  };
+  fulfillmentSelect.addEventListener("change",syncFulfillment);syncFulfillment();
+  checkoutForm.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const message=document.getElementById("checkout-message");
+    const submit=document.getElementById("checkout-submit");
+    if(!client){message.textContent="Order service unavailable. Please try again shortly.";return;}
+    const items=Object.entries(cart).filter(([slug,qty])=>products[slug]&&qty>0).map(([slug,quantity])=>({slug,quantity}));
+    if(!items.length){message.textContent="Add an item before placing your order.";return;}
+    submit.disabled=true;submit.textContent="SENDING ORDER...";message.textContent="";
+    const f=new FormData(checkoutForm);
+    const payload={p_customer_name:f.get("customer_name"),p_customer_phone:f.get("customer_phone"),p_fulfillment:f.get("fulfillment"),p_payment_method:f.get("payment_method"),p_items:items,p_delivery_address:f.get("delivery_address")||null,p_delivery_reference:f.get("delivery_reference")||null,p_table_code:f.get("table_code")||null,p_notes:f.get("notes")||null};
+    try{
+      const {data,error}=await client.rpc("create_guest_order",payload);
+      if(error) throw error;
+      const result=data;
+      cart={};persist();render();
+      const url=new URL("track.html",window.location.href);
+      url.searchParams.set("order",result.order_number);url.searchParams.set("token",result.tracking_token);
+      message.textContent="Order #"+result.order_number+" placed. Opening tracking...";
+      window.location.href=url.toString();
+    }catch(error){message.textContent=error.message||"Could not place order. Please try again.";submit.disabled=false;submit.textContent="PLACE ORDER";}
+  });
   document.addEventListener("click",event=>{
     const add=event.target.closest("[data-product]");
     if(add){
