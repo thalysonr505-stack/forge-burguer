@@ -55,3 +55,11 @@
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Cinematic hero crop on smaller screens */
+@media(max-width:768px){
+  .hero-media{inset:0}
+  .hero-video{object-position:58% center;opacity:.58}
+  .hero-media:after{background:linear-gradient(90deg,rgba(12,12,12,.84),rgba(12,12,12,.38)),linear-gradient(0deg,rgba(12,12,12,.62),transparent 55%)}
+}
