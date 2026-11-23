@@ -18,7 +18,7 @@
     if(price) price.textContent=money(p.price_cents);
     button.dataset.price=p.price_cents;
     button.disabled=!p.is_available;
-    button.innerHTML=p.is_available?'ADD TO ORDER <span>+</span>':'CURRENTLY UNAVAILABLE';
+    button.textContent=p.is_available?'ADD TO ORDER +':'CURRENTLY UNAVAILABLE';
   });
   window.forgeProducts=cards;
 })();
