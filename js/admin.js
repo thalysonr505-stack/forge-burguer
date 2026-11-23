@@ -53,7 +53,7 @@ function renderOrders(orders){
   card.appendChild(itemList);
   const total=document.createElement("div");total.className="order-total";total.textContent="TOTAL "+money(order.total_cents);card.appendChild(total);
   if(order.notes){const note=document.createElement("p");note.className="order-meta";note.textContent="OBS: "+order.notes;card.appendChild(note);}
-  const next=transitions[order.status]||[];
+  const next=(transitions[order.status]||[]).filter(value=> staff.role==="owner"||staff.role==="manager" ? true : staff.role==="kitchen" ? ((order.status==="confirmed"&&value==="preparing")||(order.status==="preparing"&&value==="ready")) : ((order.status==="pending"&&["confirmed","cancelled"].includes(value))||(order.status==="ready"&&["out_for_delivery","delivered"].includes(value))||(order.status==="out_for_delivery"&&value==="delivered")));
   if(next.length){
    const actions=document.createElement("div");actions.className="order-actions";
    const select=document.createElement("select");select.setAttribute("aria-label","Novo status do pedido "+order.order_number);
@@ -83,26 +83,8 @@ async function loadOrders(){
 async function updateStatus(id,status,button){
  button.disabled=true;
  try{
-  const update={status,updated_at:new Date().toISOString()};
-  if(status==="confirmed")update.accepted_at=new Date().toISOString();
-  if(status==="ready")update.ready_at=new Date().toISOString();
-  if(status==="delivered")update.delivered_at=new Date().toISOString();
-  const {error}=await client.from("orders").update(update).eq("id",id);
+  const {error}=await client.rpc("staff_update_order_status",{p_order_id:id,p_new_status:status,p_estimated_minutes:null});
   if(error)throw error;
   await loadOrders();
  }catch(error){message(dashboardMessage,error.message||"Não foi possível atualizar o pedido.");button.disabled=false;}
-}
-
-loginForm.addEventListener("submit",async event=>{
- event.preventDefault();const button=loginForm.querySelector("button");button.disabled=true;message(loginMessage,"Validando acesso...");
- const form=new FormData(loginForm);
- try{const {error}=await client.auth.signInWithPassword({email:form.get("email"),password:form.get("password")});if(error)throw error;const ok=await verifyStaff();if(ok){loginForm.reset();await loadOrders();}}
- catch(error){message(loginMessage,error.message||"Falha ao entrar.");}
- finally{button.disabled=false;}
-});
-logoutButton.addEventListener("click",async()=>{await client.auth.signOut();staff=null;showLogin();message(loginMessage,"Sessão encerrada.");});
-refreshButton.addEventListener("click",loadOrders);
-statusFilter.addEventListener("change",loadOrders);
-client.auth.onAuthStateChange((_event)=>{setTimeout(()=>verifyStaff().then(ok=>{if(ok)loadOrders();}),0);});
-if(await verifyStaff())await loadOrders();
-})();
+};
