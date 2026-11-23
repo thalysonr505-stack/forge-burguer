@@ -51,8 +51,9 @@
       line.append(copy,controls,lineTotal);itemsEl.appendChild(line);
     });
   };
-  const open=()=>{panel.classList.add("is-open");panel.setAttribute("aria-hidden","false");document.body.classList.add("cart-is-open");panel.querySelector(".cart-close").focus();};
-  const close=()=>{panel.classList.remove("is-open");panel.setAttribute("aria-hidden","true");document.body.classList.remove("cart-is-open");document.querySelector(".cart-launcher").focus();};
+  const focusableSelector='a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  const open=()=>{if(panel.classList.contains("is-open"))return;panel.classList.add("is-open");panel.setAttribute("aria-hidden","false");document.body.classList.add("cart-is-open");panel.querySelector(".cart-close").focus();};
+  const close=()=>{if(!panel.classList.contains("is-open"))return;panel.classList.remove("is-open");panel.setAttribute("aria-hidden","true");document.body.classList.remove("cart-is-open");document.querySelector(".cart-launcher").focus();};
   if(client){
     const {data,error}=await client.from("products").select("slug,name,price_cents,is_available");
     if(!error) for(const p of data||[]) products[p.slug]=p;
@@ -119,5 +120,14 @@
     if(event.target.closest(".cart-launcher"))open();
     if(event.target.closest("[data-cart-close]"))close();
   });
-  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&panel.classList.contains("is-open"))close();});
+  document.addEventListener("keydown",event=>{
+    if(!panel.classList.contains("is-open"))return;
+    if(event.key==="Escape"){close();return;}
+    if(event.key!=="Tab")return;
+    const focusable=[...panel.querySelectorAll(focusableSelector)].filter(el=>el.getClientRects().length>0);
+    if(!focusable.length){event.preventDefault();return;}
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  });
 })();
