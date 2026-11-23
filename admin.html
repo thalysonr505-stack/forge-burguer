@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#171717">
 <meta name="robots" content="noindex,nofollow">
 <title>FORGE® — Painel interno</title>
-<link rel="stylesheet" href="css/style.css?v=20261123j">
-<link rel="stylesheet" href="css/responsive.css?v=20261123j">
+<link rel="stylesheet" href="css/style.css?v=20261123k">
+<link rel="stylesheet" href="css/responsive.css?v=20261123k">
 <style>
 .admin-page{min-height:100vh;background:#171717;color:#e9dfc9;padding:28px 5% 60px}
 .admin-wrap{width:min(1180px,100%);margin:auto}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid #39332e;padding-bottom:20px}
@@ -18,6 +18,64 @@
 .admin-message{font-size:13px;color:#f2a17d;min-height:18px}.admin-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:25px 0}.admin-filter{display:flex;gap:10px;align-items:center}.admin-filter select{width:auto;min-width:170px}
 .order-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}.order-card{background:#211f1d;border:1px solid #443b34;padding:18px}.order-head{display:flex;justify-content:space-between;gap:12px}.order-number{color:#c45b2a;font-weight:800;letter-spacing:1px}.order-status{font-size:10px;letter-spacing:1px;color:#e9dfc9}.order-meta{color:#aaa;font-size:12px;line-height:1.7;margin:12px 0}.order-items{border-top:1px solid #39332e;padding-top:10px;font-size:12px;line-height:1.8}.order-total{font-weight:800;margin-top:12px}.order-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:14px}.admin-hidden{display:none!important}
 @media(max-width:600px){.admin-page{padding:20px 16px 45px}.admin-top{align-items:flex-start}.admin-filter{width:100%}.admin-filter select{flex:1}.order-actions{grid-template-columns:1fr}}
+
+/* Admin dashboard refinement — readable order operations */
+.admin-page{padding-top:clamp(22px,4vw,42px)}
+.admin-wrap{max-width:1240px}
+.admin-top{min-height:54px}
+.admin-title{line-height:.92}
+.admin-toolbar{align-items:flex-end;padding:18px 0;border-bottom:1px solid #39332e}
+.admin-toolbar>strong{font-size:15px;letter-spacing:.3px}
+.admin-filter{flex-wrap:wrap}
+.admin-filter select,.order-card select{min-height:46px;border-radius:2px}
+.admin-btn{min-height:46px;border-radius:2px;transition:background .18s,transform .18s,border-color .18s}
+.admin-btn:not(:disabled):hover{background:#e77946;transform:translateY(-1px)}
+.admin-btn:focus-visible,.admin-filter select:focus-visible,.order-card select:focus-visible,.admin-form input:focus-visible{outline:2px solid #f2a17d;outline-offset:3px}
+.order-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr));align-items:stretch;gap:16px}
+.order-card{display:flex;min-width:0;flex-direction:column;gap:0;border-color:#494039;border-radius:3px;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.order-head{align-items:center;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid #39332e}
+.order-number{font-size:15px}
+.order-status{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:6px 9px;border:1px solid #66564a;border-radius:2px;background:#302923;color:#f0d6bd;font-size:9px;font-weight:800;letter-spacing:.8px;text-align:center}
+.order-status.status-pending{border-color:#a66a32;background:#3a2b1d;color:#ffc17d}
+.order-status.status-confirmed{border-color:#6c7e9a;background:#252e3a;color:#c7d9f4}
+.order-status.status-preparing{border-color:#b36b37;background:#3b281e;color:#ffbd91}
+.order-status.status-ready{border-color:#a58a43;background:#37311e;color:#f2df9a}
+.order-status.status-out_for_delivery{border-color:#668b70;background:#203128;color:#bce6c6}
+.order-status.status-delivered{border-color:#668b70;background:#203128;color:#bce6c6}
+.order-status.status-cancelled{border-color:#8c5550;background:#382322;color:#f0b4ae}
+.order-meta{white-space:pre-line;overflow-wrap:anywhere;font-size:12px;line-height:1.85}
+.order-items{display:grid;gap:5px;padding:14px 0;color:#d8cbb8;overflow-wrap:anywhere}
+.order-total{margin-top:auto;padding-top:14px;border-top:1px solid #39332e;color:#f0a078;font-size:17px;letter-spacing:.4px}
+.order-actions{grid-template-columns:minmax(0,1fr) minmax(132px,.9fr);align-items:stretch;padding-top:14px}
+.order-actions select{min-width:0}
+.order-actions .admin-btn{padding:12px 10px;font-size:10px;letter-spacing:.7px}
+#dashboard-message{margin:8px 0}
+@media(max-width:600px){
+ .admin-page{padding:16px 13px 34px}
+ .admin-top{align-items:center;gap:10px}
+ .admin-brand{font-size:11px;letter-spacing:2.5px}
+ .admin-top .admin-btn{min-height:40px;padding:10px 13px;font-size:10px}
+ .admin-title{margin:28px 0 8px;font-size:clamp(34px,11vw,48px)}
+ .admin-card{padding:20px 16px}
+ .admin-toolbar{align-items:stretch;gap:13px;margin:20px 0 14px;padding-bottom:15px}
+ .admin-toolbar>strong{padding-top:3px}
+ .admin-filter{display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%;gap:8px}
+ .admin-filter select{width:100%;min-width:0;min-height:46px;font-size:12px}
+ #refresh-button{min-height:46px;padding:10px 12px;font-size:9px;letter-spacing:.7px}
+ .order-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .order-card{padding:15px}
+ .order-head{align-items:flex-start;gap:9px}
+ .order-number{font-size:14px}
+ .order-status{max-width:100%;font-size:8px}
+ .order-meta{font-size:12px;line-height:1.8}
+ .order-actions{grid-template-columns:minmax(0,1fr);gap:9px}
+ .order-actions select,.order-actions .admin-btn{width:100%;min-height:48px}
+}
+@media(max-width:360px){
+ .admin-filter{grid-template-columns:minmax(0,1fr)}
+ #refresh-button{width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -35,9 +93,9 @@
 <h1 class="admin-title">ORDER<br>CONTROL<span style="color:#c45b2a">.</span></h1>
 <p id="staff-greeting" class="admin-sub">Painel operacional</p>
 <div class="admin-toolbar"><strong>Pedidos recebidos</strong><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
-<p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid"></div>
+<p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid" aria-live="polite"></div>
 </section>
 </div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js';"></script>
-<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=3"></script>
+<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=4"></script>
 </body></html>
