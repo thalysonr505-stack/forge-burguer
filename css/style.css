@@ -175,3 +175,84 @@ img {
     font-size: 9px;
     letter-spacing: 2px;
 }
+
+
+/* ==============================
+   FORGE BURGER — MENU
+============================== */
+
+.menu-section {
+    padding: 120px 10%;
+    background: #1D1D1D;
+}
+
+.menu-heading {
+    margin-bottom: 65px;
+}
+
+.menu-heading h2 {
+    font-size: clamp(55px, 8vw, 100px);
+    line-height: .9;
+    letter-spacing: -5px;
+    margin: 25px 0;
+    font-weight: 900;
+}
+
+.menu-heading h2 span {
+    color: var(--orange);
+}
+
+.menu-heading p {
+    color: var(--gray);
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(233, 223, 201, .15);
+    border: 1px solid rgba(233, 223, 201, .15);
+}
+
+.menu-card {
+    min-height: 220px;
+    padding: 35px;
+    background: #1D1D1D;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background .3s;
+}
+
+.menu-card:hover {
+    background: #25211F;
+}
+
+.menu-number {
+    color: var(--orange);
+    font-size: 11px;
+    letter-spacing: 3px;
+}
+
+.menu-info h3 {
+    color: var(--cream);
+    font-size: 22px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.menu-info p {
+    color: var(--gray);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 350px;
+    margin-bottom: 20px;
+}
+
+.menu-info strong {
+    color: var(--orange);
+    font-size: 18px;
+    letter-spacing: 1px;
+}
