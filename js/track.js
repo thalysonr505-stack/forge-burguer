@@ -4,7 +4,7 @@ const steps=["pending","confirmed","preparing","ready","out_for_delivery","deliv
 const labels=["ORDER RECEIVED","CONFIRMED","IN PREPARATION","READY","OUT FOR DELIVERY","DELIVERED"];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v/100);
 if(!client||!order||!token){card.innerHTML='<p class="track-error">Invalid tracking link. Use the private link provided after checkout.</p>';return;}
-let channel=null;
+let refreshTimer=null;
 async function load(){
 const {data,error}=await client.rpc("get_order_tracking",{p_order_number:Number(order),p_tracking_token:token});
 if(error){card.innerHTML='<p class="track-error">Order not found or tracking code invalid. Keep your private tracking link safe.</p>';return;}
@@ -13,6 +13,6 @@ card.innerHTML='<div class="track-number">ORDER #'+data.order_number+'</div><div
 if(data.status==="cancelled") card.insertAdjacentHTML("beforeend",'<p class="track-error">Please contact the restaurant about this order.</p>');
 }
 await load();
-channel=client.channel("track-order-"+order).on("postgres_changes",{event:"UPDATE",schema:"public",table:"orders",filter:"order_number=eq."+order},load).subscribe();
-window.addEventListener("beforeunload",()=>{if(channel)client.removeChannel(channel);});
+refreshTimer=window.setInterval(load,12000);
+window.addEventListener("beforeunload",()=>{if(refreshTimer)window.clearInterval(refreshTimer);});
 })();
