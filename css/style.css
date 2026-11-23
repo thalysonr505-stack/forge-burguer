@@ -127,3 +127,13 @@ a,button,[role="button"],input[type="submit"],input[type="button"],select,label[
   html,body,body *{cursor:auto}
   a,button,[role="button"],input[type="submit"],input[type="button"],select,label[for],.add-to-cart,.cart-launcher,.cart-close,.cart-controls button{cursor:pointer}
 }
+
+
+/* Cinematic HOME video */
+.hero{isolation:isolate;background:#101010}
+.hero-media{position:absolute;z-index:0;inset:0;overflow:hidden;background:radial-gradient(ellipse at 78% 50%,rgba(196,91,42,.18),transparent 42%),#111}
+.hero-video{width:100%;height:100%;object-fit:cover;object-position:center 54%;opacity:.72;filter:saturate(.92) contrast(1.08)}
+.hero-media:after{position:absolute;inset:0;content:"";background:linear-gradient(90deg,rgba(12,12,12,.94) 0%,rgba(12,12,12,.78) 36%,rgba(12,12,12,.22) 75%,rgba(12,12,12,.34) 100%),linear-gradient(0deg,rgba(12,12,12,.58),transparent 35%,rgba(12,12,12,.12))}
+.hero-content{z-index:2}
+.hero-bottom{z-index:2}
+@media(prefers-reduced-motion:reduce){.hero-video{display:none}}
