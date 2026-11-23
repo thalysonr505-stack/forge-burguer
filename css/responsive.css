@@ -1,128 +1,44 @@
-@media (max-width: 768px) {
-    .header {
-        min-height: 104px;
-        height: auto;
-        padding: 13px 5% 11px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        row-gap: 10px;
-    }
-
-    .logo {
-        font-size: 21px;
-        flex: 1 1 auto;
-    }
-
-    .header-button {
-        padding: 10px 13px;
-        font-size: 9px;
-        white-space: nowrap;
-    }
-
-    .nav {
-        display: flex;
-        order: 3;
-        flex: 0 0 100%;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-        padding-top: 5px;
-        border-top: 1px solid rgba(233, 223, 201, .09);
-    }
-
-    .nav a {
-        font-size: 9px;
-        letter-spacing: 1.4px;
-        padding: 7px 0;
-    }
-
-    .hero {
-        min-height: 620px;
-        height: calc(100svh - 104px);
-        padding: 0 7%;
-        background:
-            radial-gradient(ellipse at 78% 48%, rgba(196, 91, 42, .20), transparent 48%),
-            linear-gradient(135deg, #171717 0%, #1c1917 55%, #171717 100%);
-    }
-
-    .hero h1 {
-        font-size: clamp(62px, 16vw, 100px);
-        letter-spacing: -5px;
-    }
-
-    .hero-content p {
-        font-size: 13px;
-        max-width: 290px;
-    }
-
-    .hero-bottom {
-        font-size: 8px;
-    }
-
-    .page-indicator {
-        right: 9px;
-        gap: 12px;
-        padding: 13px 9px;
-        background: rgba(23, 23, 23, .94);
-        border-color: rgba(233, 223, 201, .28);
-        box-shadow: 0 4px 18px rgba(0, 0, 0, .35);
-    }
-
-    .page-indicator a {
-        display: block;
-        width: 7px;
-        height: 7px;
-        flex: 0 0 7px;
-    }
-
-    .menu-section {
-        padding: 85px 7%;
-    }
-
-    .menu-heading {
-        margin-bottom: 42px;
-    }
-
-    .menu-heading h2 {
-        font-size: clamp(48px, 11vw, 76px);
-        letter-spacing: -3px;
-    }
+@media(max-width:900px){
+.header{gap:16px;padding-right:4%;padding-left:4%}
+.nav{gap:16px}.nav a{font-size:9px;letter-spacing:1.4px}
+.header-button{min-height:42px;padding:0 15px;font-size:9px}
+.hero{padding-right:12%;padding-left:7%}
+.menu-section{padding-right:7%;padding-left:7%}
 }
-
-@media (max-width: 380px) {
-    .header {
-        padding-left: 4%;
-        padding-right: 4%;
-    }
-
-    .nav a {
-        font-size: 8px;
-        letter-spacing: 1px;
-    }
-
-    .header-button {
-        padding: 9px 10px;
-        font-size: 8px;
-    }
-
-    .hero h1 {
-        font-size: 59px;
-    }
-
-    .page-indicator {
-        right: 7px;
-    }
+@media(max-width:680px){
+.header{min-height:108px;height:auto;padding:13px 5% 11px;display:grid;grid-template-columns:1fr auto;row-gap:12px}
+.logo{font-size:21px}.header-button{min-height:39px;padding:0 13px;font-size:8px;white-space:nowrap}
+.nav{grid-column:1/-1;order:3;display:flex;width:100%;justify-content:space-between;gap:8px;padding-top:9px;border-top:1px solid rgba(233,223,201,.09)}
+.nav a{padding:5px 0;font-size:8px;letter-spacing:1px}
+.hero{min-height:590px;height:calc(100svh - 108px);max-height:none;padding:50px 7% 105px;background:radial-gradient(ellipse at 78% 48%,rgba(196,91,42,.2),transparent 48%),linear-gradient(135deg,#171717 0%,#1c1917 55%,#171717 100%)}
+.hero h1{margin:24px 0;font-size:clamp(54px,13vw,88px);letter-spacing:-.07em;line-height:.92}
+.hero-content p{max-width:290px;font-size:13px}
+.forge-page-hero{padding-right:7%;padding-bottom:115px}
+.forge-page-hero h1{font-size:clamp(42px,10.5vw,72px);letter-spacing:-.065em;line-height:.98;overflow-wrap:anywhere}
+.forge-page-hero .hero-content{max-width:100%;padding-right:0}
+.forge-page-hero .eyebrow{font-size:9px;letter-spacing:3px}
+.hero-bottom{bottom:22px;font-size:7px;letter-spacing:1.2px}
+.menu-section{padding:75px 6% 90px}
+.menu-heading{margin-bottom:38px}
+.menu-heading h1{font-size:clamp(46px,11vw,72px);letter-spacing:-.06em}
+.menu-grid{grid-template-columns:1fr}
+.menu-card img{height:220px}
+.menu-number{margin:0 18px 16px}
+.menu-info{padding:0 18px}
+.menu-info h2{font-size:19px}
+.menu-info p{font-size:12px}
+.page-indicator{top:auto;right:50%;bottom:12px;left:auto;width:min(330px,calc(100% - 32px));padding:7px 9px;transform:translateX(50%);flex-direction:row;justify-content:space-around;gap:4px;border-radius:18px;background:rgba(18,18,18,.94)}
+.page-indicator a{min-height:52px;flex:1;gap:3px;border-radius:12px}
+.indicator-number{font-size:7px}
+.indicator-icon{width:18px;height:18px}
+.indicator-icon svg{width:17px;height:17px}
+.indicator-label{font-size:6px;letter-spacing:.5px}
+.menu-footer{padding-bottom:85px}
 }
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-    }
+@media(max-width:360px){
+.header{padding-right:4%;padding-left:4%}
+.nav a{font-size:7px;letter-spacing:.7px}
+.header-button{padding:0 10px;font-size:7px}
+.forge-page-hero h1{font-size:clamp(38px,10vw,48px)}
+.page-indicator{width:calc(100% - 24px)}
 }
-
-
-/* Compact numbered page index */
-@media(max-width:380px){.page-indicator{right:5px;width:46px;padding:6px 4px}.page-indicator a{min-height:44px}.page-indicator .indicator-label{font-size:5.5px}}
