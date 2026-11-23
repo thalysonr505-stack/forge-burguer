@@ -114,3 +114,16 @@ body.cart-is-open{overflow:hidden}
 .checkout-message{min-height:18px;color:#f2a17d;font-size:11px;line-height:1.5}
 .cart-checkout:enabled{background:var(--orange);color:#171717;cursor:pointer}
 .cart-checkout:disabled{opacity:.65;cursor:wait}
+
+
+/* FORGE custom cursor — vivid orange with high-contrast outline */
+:root{
+  --forge-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='56' viewBox='0 0 48 56'%3E%3Cpath d='M5 3 L5 43 L15 33 L23 50 L31 46 L23 29 L39 28 Z' fill='%23ff641f' stroke='%23ffffff' stroke-width='2.8' stroke-linejoin='round'/%3E%3C/svg%3E") 5 3, auto;
+  --forge-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='56' viewBox='0 0 48 56'%3E%3Cpath d='M5 3 L5 43 L15 33 L23 50 L31 46 L23 29 L39 28 Z' fill='%23ff641f' stroke='%23ffffff' stroke-width='2.8' stroke-linejoin='round'/%3E%3C/svg%3E") 5 3, pointer;
+}
+html,body,body *{cursor:var(--forge-cursor)}
+a,button,[role="button"],input[type="submit"],input[type="button"],select,label[for],.add-to-cart,.cart-launcher,.cart-close,.cart-controls button{cursor:var(--forge-pointer)}
+@media(hover:none){
+  html,body,body *{cursor:auto}
+  a,button,[role="button"],input[type="submit"],input[type="button"],select,label[for],.add-to-cart,.cart-launcher,.cart-close,.cart-controls button{cursor:pointer}
+}
