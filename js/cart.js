@@ -70,7 +70,11 @@
       truffle:{name:"THE TRUFFLE",price_cents:4290,is_available:true}
     };
   }
-  for(const slug of Object.keys(cart)) if(!products[slug]||!products[slug].is_available||!Number.isInteger(cart[slug])||cart[slug]<1) delete cart[slug];
+  for(const slug of Object.keys(cart)) {
+    const qty=cart[slug];
+    if(!Object.prototype.hasOwnProperty.call(products,slug)||!products[slug].is_available||!Number.isInteger(qty)||qty<1) delete cart[slug];
+    else cart[slug]=Math.min(qty,30);
+  }
   persist();render();
   const checkoutForm=document.getElementById("checkout-form");
   const fulfillmentSelect=document.getElementById("fulfillment");
