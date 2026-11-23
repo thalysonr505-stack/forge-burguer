@@ -351,3 +351,42 @@ a,button,[role="button"],input[type="submit"],input[type="button"],select,label[
   }
   .header .header-button{min-width:0;min-height:40px}
 }
+
+
+/* Unified FORGE button language — rounded edges and tactile press feedback */
+:root{--forge-button-radius:11px;--forge-button-ease:cubic-bezier(.2,.75,.25,1)}
+.header .header-button,.hero-button,.add-to-cart,.cart-launcher,.cart-checkout,
+.admin-btn,.track-button,.contact-button,button[type="submit"],input[type="submit"],input[type="button"]{
+  border-radius:var(--forge-button-radius);
+  transition:background-color .2s var(--forge-button-ease),border-color .2s var(--forge-button-ease),
+    color .2s var(--forge-button-ease),box-shadow .2s var(--forge-button-ease),
+    transform .16s var(--forge-button-ease),filter .2s var(--forge-button-ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.header .header-button,.hero-button,.add-to-cart,.cart-launcher,.cart-checkout,
+.admin-btn,button[type="submit"],input[type="submit"],input[type="button"]{
+  overflow:hidden;
+}
+.header .header-button:active,.hero-button:active,.add-to-cart:active,
+.cart-launcher:active,.cart-close:active,.cart-controls button:active,
+.cart-checkout:enabled:active,.admin-btn:not(:disabled):active,
+button[type="submit"]:not(:disabled):active,input[type="submit"]:not(:disabled):active,
+input[type="button"]:not(:disabled):active{
+  transform:translateY(1px) scale(.97);
+  filter:brightness(.91);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.22);
+}
+.add-to-cart,.cart-checkout,.admin-btn{border-radius:10px}
+.cart-launcher{border-radius:12px}
+.cart-close,.cart-controls button{transition:background .18s,border-color .18s,color .18s,transform .16s}
+.cart-close:active,.cart-controls button:active{transform:scale(.92)}
+.header .header-button:focus-visible,.hero-button:focus-visible,.add-to-cart:focus-visible,
+.cart-launcher:focus-visible,.cart-close:focus-visible,.cart-checkout:focus-visible,
+.admin-btn:focus-visible,button[type="submit"]:focus-visible,input[type="submit"]:focus-visible{
+  outline:2px solid #f2a17d;outline-offset:3px;
+}
+:disabled{cursor:not-allowed}
+@media(prefers-reduced-motion:reduce){
+ .header .header-button,.hero-button,.add-to-cart,.cart-launcher,.cart-checkout,.admin-btn,
+ button[type="submit"],input[type="submit"],input[type="button"]{transition:none}
+}
