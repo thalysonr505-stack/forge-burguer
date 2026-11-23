@@ -256,3 +256,57 @@ img {
     font-size: 18px;
     letter-spacing: 1px;
 }
+
+/* ==============================
+   FORGE BURGER — PRODUCT IMAGES
+============================== */
+
+.menu-card {
+    overflow: hidden;
+    position: relative;
+    padding: 0 0 30px;
+}
+
+.menu-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 28px;
+    transition: transform .5s ease;
+}
+
+.menu-card:hover img {
+    transform: scale(1.04);
+}
+
+.menu-card .menu-number {
+    display: block;
+    margin: 0 30px 22px;
+}
+
+.menu-card .menu-info {
+    padding: 0 30px;
+}
+
+@media (max-width: 768px) {
+    .menu-card img {
+        height: 155px;
+    }
+
+    .menu-card .menu-number {
+        margin: 0 16px 18px;
+    }
+
+    .menu-card .menu-info {
+        padding: 0 16px;
+    }
+
+    .menu-info h3 {
+        font-size: 17px;
+    }
+
+    .menu-info p {
+        font-size: 12px;
+    }
+}
