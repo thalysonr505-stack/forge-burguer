@@ -122,3 +122,7 @@
         transition-duration: .01ms !important;
     }
 }
+
+
+/* Compact numbered page index */
+@media(max-width:380px){.page-indicator{right:5px;width:46px;padding:6px 4px}.page-indicator a{min-height:44px}.page-indicator .indicator-label{font-size:5.5px}}
