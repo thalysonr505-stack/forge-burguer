@@ -1,0 +1,74 @@
+name: FORGE automatic checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  static-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate JavaScript syntax
+        run: |
+          for file in js/*.js; do
+            echo "Checking $file"
+            node --check "$file"
+          done
+      - name: Validate HTML structure and required assets
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import sys
+
+          class Checker(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.errors = []
+              def error(self, message):
+                  self.errors.append(message)
+
+          root = Path(".")
+          pages = ["index.html", "menu.html", "about.html", "contact.html", "admin.html", "track.html"]
+          required_media = [
+              "images/the-original.jpg",
+              "images/double-forge.jpg",
+              "images/the-bacon.jpg",
+              "images/the-truffle.jpg",
+              "images/forge-home.mp4",
+          ]
+          failed = False
+          for name in pages:
+              path = root / name
+              if not path.is_file():
+                  print(f"FAIL missing page: {name}")
+                  failed = True
+                  continue
+              source = path.read_text(encoding="utf-8")
+              parser = Checker()
+              parser.feed(source)
+              parser.close()
+              if parser.errors:
+                  print(f"FAIL malformed HTML: {name}: {parser.errors}")
+                  failed = True
+              else:
+                  print(f"PASS HTML parsed: {name}")
+              for required in ["name=\"viewport\"", "css/style.css", "css/responsive.css"]:
+                  if required not in source:
+                      print(f"FAIL {name} missing {required}")
+                      failed = True
+          for asset in required_media:
+              if (root / asset).is_file():
+                  print(f"PASS media present: {asset}")
+              else:
+                  print(f"FAIL media missing: {asset}")
+                  failed = True
+          if failed:
+              sys.exit(1)
+          print("All FORGE static checks passed.")
+          PY
