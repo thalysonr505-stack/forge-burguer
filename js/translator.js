@@ -19,9 +19,9 @@
   trigger.addEventListener("click",()=>{menu.hidden? (menu.hidden=false,trigger.setAttribute("aria-expanded","true")):closeMenu()});
   root.querySelector(".forge-language-reset").addEventListener("click",()=>selectLanguage(languages[0]));
   document.addEventListener("click",e=>{if(!root.contains(e.target))closeMenu()});
-  window.googleTranslateElementInit=function(){new google.translate.TranslateElement({pageLanguage:"pt",includedLanguages:"en,es,fr,de,it",autoDisplay:false},"google_translate_element");const pending=window.forgePendingLanguage;if(pending&&pending!=="pt"){const s=document.querySelector(".goog-te-combo");if(s){s.value=pending;s.dispatchEvent(new Event("change"))}}};
+  window.googleTranslateElementInit=function(){new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"pt,es,fr,de,it",autoDisplay:false},"google_translate_element");const pending=window.forgePendingLanguage;if(pending){const s=document.querySelector(".goog-te-combo");if(s){s.value=pending;s.dispatchEvent(new Event("change"))}}};
   let loaded=false;
   function loadGoogleTranslate(){if(loaded)return;loaded=true;const s=document.createElement("script");s.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";s.async=true;s.onerror=()=>{loaded=false};document.head.appendChild(s)}
-  if(saved!=="pt-BR"){const chosen=languages.find(x=>x.code===saved);if(chosen){document.documentElement.lang=chosen.code;label.textContent=chosen.label.toUpperCase();if(chosen.google!=="pt"){window.forgePendingLanguage=chosen.google}}}
+  {const chosen=languages.find(x=>x.code===saved)||languages[0];document.documentElement.lang=chosen.code;if(chosen.code!=="pt-BR")label.textContent=chosen.label.toUpperCase();window.forgePendingLanguage=chosen.google;}
   loadGoogleTranslate();
 })();
