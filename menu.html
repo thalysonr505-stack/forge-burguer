@@ -55,7 +55,7 @@
                 <article class="menu-card">
                     <img src="images/the-original.jpg" alt="The Original Burger">
                     <span class="menu-number">01</span>
-                    <div class="menu-info"><h2>THE ORIGINAL</h2><p>Brioche, 100g smash burger, cheddar and house sauce.</p><strong class="product-price">R$ 29,90</strong><button class="add-to-cart" type="button" data-product="original">ADD TO ORDER <span>+</span></button></div>
+                    <div class="menu-info"><h2>THE ORIGINAL</h2><p>Brioche, 100g smash burger, cheddar and house sauce.</p><strong class="product-price">R$ 29,90</strong><button class="add-to-cart" type="button" data-product="original">ADICIONAR AO CARRINHO <span>+</span></button></div>
                 </article>
                 <article class="menu-card">
                     <img src="images/double-forge.jpg" alt="Double Forge Burger">
@@ -75,26 +75,26 @@
             </div>
         </section>
     </main>
-    <button class="cart-launcher" type="button" aria-label="Open shopping cart" aria-controls="cart-panel"><span class="cart-symbol">BAG</span><span class="cart-count" id="cart-count">0</span></button>
-    <aside class="cart-panel" id="cart-panel" aria-hidden="true" aria-label="Your order">
+    <button class="cart-launcher" type="button" aria-label="Abrir carrinho" aria-controls="cart-panel"><span class="cart-symbol">BAG</span><span class="cart-count" id="cart-count">0</span></button>
+    <aside class="cart-panel" id="cart-panel" aria-hidden="true" aria-label="Seu pedido">
       <div class="cart-backdrop" data-cart-close></div>
       <section class="cart-sheet" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-        <header class="cart-head"><div><span class="eyebrow">YOUR SELECTION</span><h2 id="cart-title">YOUR ORDER<span>.</span></h2></div><button class="cart-close" type="button" data-cart-close aria-label="Close cart">×</button></header>
-        <div class="cart-items" id="cart-items"><p class="cart-empty">Your bag is waiting. Add a Forge creation to begin.</p></div>
+        <header class="cart-head"><div><span class="eyebrow">SEU PEDIDO</span><h2 id="cart-title">SEU PEDIDO<span>.</span></h2></div><button class="cart-close" type="button" data-cart-close aria-label="Fechar carrinho">×</button></header>
+        <div class="cart-items" id="cart-items"><p class="cart-empty">Seu carrinho está vazio. Escolha um Forge para começar.</p></div>
         <div class="cart-summary"><span>SUBTOTAL</span><strong id="cart-subtotal">R$ 0,00</strong></div>
         
         <form class="checkout-form" id="checkout-form">
-          <h3>CHECKOUT<span>.</span></h3>
-          <label>YOUR NAME<input name="customer_name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Full name"></label>
-          <label>PHONE / WHATSAPP<input name="customer_phone" type="tel" autocomplete="tel" minlength="10" maxlength="20" required placeholder="(85) 99999-9999"></label>
-          <label>ORDER TYPE<select name="fulfillment" id="fulfillment" required><option value="delivery">Delivery</option><option value="pickup">Pickup</option><option value="dine_in">Dine in</option></select></label>
-          <label id="delivery-address-field">DELIVERY ADDRESS<textarea name="delivery_address" autocomplete="street-address" rows="2" placeholder="Street, number, neighborhood and city"></textarea></label>
-          <label id="delivery-reference-field">REFERENCE / COMPLEMENT<input name="delivery_reference" maxlength="180" placeholder="Apartment, landmark (optional)"></label>
-          <label id="table-code-field" hidden>TABLE CODE<input name="table_code" maxlength="30" placeholder="Table number or QR code"></label>
-          <label>PAYMENT<select name="payment_method" required><option value="pix">PIX</option><option value="cash">Cash</option><option value="card_on_delivery">Card on delivery</option></select></label>
-          <label>NOTES<textarea name="notes" rows="2" maxlength="500" placeholder="Allergies or special instructions (optional)"></textarea></label>
+          <h3>FINALIZAÇÃO<span>.</span></h3>
+          <label>SEU NOME<input name="customer_name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Nome completo"></label>
+          <label>TELEFONE / WHATSAPP<input name="customer_phone" type="tel" autocomplete="tel" minlength="10" maxlength="20" required placeholder="(85) 99999-9999"></label>
+          <label>TIPO DE PEDIDO<select name="fulfillment" id="fulfillment" required><option value="delivery">Entrega</option><option value="pickup">Retirada</option><option value="dine_in">Consumir no local</option></select></label>
+          <label id="delivery-address-field">ENDEREÇO DE ENTREGA<textarea name="delivery_address" autocomplete="street-address" rows="2" placeholder="Rua, número, bairro e cidade"></textarea></label>
+          <label id="delivery-reference-field">REFERÊNCIA / COMPLEMENTO<input name="delivery_reference" maxlength="180" placeholder="Apartamento, ponto de referência (opcional)"></label>
+          <label id="table-code-field" hidden>NÚMERO DA MESA<input name="table_code" maxlength="30" placeholder="Número da mesa ou código QR"></label>
+          <label>FORMA DE PAGAMENTO<select name="payment_method" required><option value="pix">PIX</option><option value="cash">Dinheiro</option><option value="card_on_delivery">Cartão na entrega</option></select></label>
+          <label>OBSERVAÇÕES<textarea name="notes" rows="2" maxlength="500" placeholder="Alergias ou instruções especiais (opcional)"></textarea></label>
           <p class="checkout-message" id="checkout-message" role="status" aria-live="polite"></p>
-          <button class="cart-checkout" id="checkout-submit" type="submit" disabled>PLACE ORDER</button>
+          <button class="cart-checkout" id="checkout-submit" type="submit" disabled>FINALIZAR PEDIDO</button>
         </form>
       </section>
     </aside>
