@@ -8,12 +8,12 @@
   const card = document.getElementById("track-card");
 
   const steps = [
-    ["pending", "ORDER RECEIVED"],
-    ["confirmed", "CONFIRMED"],
-    ["preparing", "IN PREPARATION"],
-    ["ready", "READY"],
-    ["out_for_delivery", "OUT FOR DELIVERY"],
-    ["delivered", "DELIVERED"]
+    ["pending", "PEDIDO RECEBIDO"],
+    ["confirmed", "CONFIRMADO"],
+    ["preparing", "EM PREPARO"],
+    ["ready", "PRONTO"],
+    ["out_for_delivery", "SAIU PARA ENTREGA"],
+    ["delivered", "ENTREGUE"]
   ];
   const money = value => new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -31,7 +31,7 @@
   };
 
   if (!client || !order || !/^\d+$/.test(order) || !token || !/^[a-f0-9]{48}$/i.test(token)) {
-    showMessage("Link de acompanhamento inválido. Utilize o link privado recebido após o pedido.", true);
+    showMessage("Link de acompanhamento inválido. Utilize o link privado recebido após realizar o pedido.", true);
     return;
   }
 
@@ -59,15 +59,15 @@
     appendText(card, "div", "track-number", "ORDER #" + data.order_number);
 
     if (data.status === "cancelled") {
-      appendText(card, "div", "track-status", "ORDER CANCELLED");
+      appendText(card, "div", "track-status", "PEDIDO CANCELADO");
       appendText(card, "p", "track-error", "Este pedido foi cancelado. Entre em contato com a equipe da FORGE para obter mais informações.");
     } else {
       const current = steps.findIndex(([key]) => key === data.status);
-      const label = current >= 0 ? steps[current][1] : "STATUS UPDATE";
+      const label = current >= 0 ? steps[current][1] : "ATUALIZAÇÃO DO PEDIDO";
       appendText(card, "div", "track-status", label);
 
       const estimate = data.estimated_minutes
-        ? "Tempo estimado: " + data.estimated_minutes + " minutos"
+        ? "Previsão: " + data.estimated_minutes + " minutos"
         : "Atualizaremos a previsão assim que possível.";
       appendText(card, "p", "track-estimate", estimate);
 
