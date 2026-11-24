@@ -15,7 +15,7 @@
     if(saved && typeof saved==="object") cart=saved;
   } catch (_) { cart={}; }
   const money=value=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(value/100);
-  const productNames={original:"O ORIGINAL","double-forge":"DUPLO FORGE",bacon:"BACON DA CASA",truffle:"TRUFA"};
+  const productNames={};
   if(!client){
     document.querySelectorAll("[data-product]").forEach(button=>{button.disabled=true;button.setAttribute("aria-disabled","true");button.textContent="INDISPONÍVEL";});
     toast.textContent="Não foi possível conectar ao cardápio. Tente novamente em instantes.";
@@ -48,7 +48,7 @@
       const p=products[slug];
       const line=document.createElement("article");line.className="cart-line";
       const copy=document.createElement("div");copy.className="cart-line-copy";
-      const name=document.createElement("strong");name.textContent=productNames[slug]||p.name;
+      const name=document.createElement("strong");name.textContent=p.name;
       const unit=document.createElement("span");unit.textContent=money(p.price_cents)+" cada";
       copy.append(name,unit);
       const controls=document.createElement("div");controls.className="cart-controls";
@@ -122,7 +122,7 @@
     const add=event.target.closest("[data-product]");
     if(add){
       const slug=add.dataset.product,p=products[slug];
-      if(p&&p.is_available){cart[slug]=Math.min((cart[slug]||0)+1,30);persist();render();showToast((productNames[slug]||p.name)+" ADICIONADO AO CARRINHO");}
+      if(p&&p.is_available){cart[slug]=Math.min((cart[slug]||0)+1,30);persist();render();showToast(p.name+" ADICIONADO AO CARRINHO");}
     }
     const qty=event.target.closest("[data-quantity]");
     if(qty){const slug=qty.dataset.id;cart[slug]=Math.max(0,Math.min(30,(cart[slug]||0)+Number(qty.dataset.quantity)));if(!cart[slug])delete cart[slug];persist();render();}
