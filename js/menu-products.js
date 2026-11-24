@@ -1,27 +1,34 @@
 (async function () {
   "use strict";
   const client=window.forgeSupabase;
+  const grid=document.querySelector(".menu-grid");
   const money=value=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(value/100);
-  const buttons=[...document.querySelectorAll(".menu-card [data-product]")];
-  const localized={original:{name:"O ORIGINAL",description:"Pão brioche, hambúrguer de 100 g na chapa, queijo cheddar e molho da casa."},"double-forge":{name:"DUPLO FORGE",description:"Pão brioche, dois hambúrgueres na chapa, cheddar em dobro e molho da casa."},bacon:{name:"BACON DA CASA",description:"Pão brioche, hambúrguer na chapa, cheddar, bacon crocante e molho especial."},truffle:{name:"TRUFA",description:"Pão brioche, hambúrguer na chapa, queijo e molho cremoso com inspiração em trufas."}};
-  if(!client){buttons.forEach(button=>{button.disabled=true;button.textContent="CARDÁPIO INDISPONÍVEL";});return;}
-  const {data,error}=await client.from("products").select("slug,name,description,price_cents,is_available,sort_order").order("sort_order");
-  if(error){console.error("FORGE menu sync:",error.message);buttons.forEach(button=>{button.disabled=true;button.textContent="INDISPONÍVEL NO MOMENTO";});return;}
-  const cards=new Map((data||[]).map(p=>[p.slug,p]));
-  document.querySelectorAll(".menu-card [data-product]").forEach(button=>{
-    const card=button.closest(".menu-card");
-    const p=cards.get(button.dataset.product);
-    if(!p){button.disabled=true;button.textContent="INDISPONÍVEL";return;}
-    const title=card.querySelector(".menu-info h2");
-    const description=card.querySelector(".menu-info p");
-    const price=card.querySelector(".product-price");
-    const copy=localized[p.slug]||{name:p.name,description:p.description};
-    if(title) title.textContent=copy.name;
-    if(description) description.textContent=copy.description;
-    if(price) price.textContent=money(p.price_cents);
-    button.dataset.price=p.price_cents;
-    button.disabled=!p.is_available;
-    button.innerHTML=p.is_available?'ADICIONAR AO CARRINHO <span>+</span>':'INDISPONÍVEL NO MOMENTO';
+  if(!client||!grid)return;
+  const {data,error}=await client.from("products").select("slug,name,description,price_cents,image_url,is_available,sort_order").order("sort_order").order("name");
+  if(error){console.error("FORGE menu sync:",error.message);grid.textContent="Não foi possível carregar o cardápio. Atualize a página.";return;}
+  const existing=new Map([...grid.querySelectorAll("[data-product]")].map(button=>[button.dataset.product,button.closest(".menu-card")]));
+  const products=data||[];
+  products.forEach((p,index)=>{
+    let card=existing.get(p.slug);
+    if(!card){
+      card=document.createElement("article");card.className="menu-card";
+      const img=document.createElement("img");img.src=p.image_url||"images/the-original.jpg";img.alt="Hambúrguer "+p.name;img.loading="lazy";
+      const number=document.createElement("span");number.className="menu-number";number.textContent=String(index+1).padStart(2,"0");
+      const info=document.createElement("div");info.className="menu-info";
+      const title=document.createElement("h2");const desc=document.createElement("p");const price=document.createElement("strong");price.className="product-price";
+      const button=document.createElement("button");button.className="add-to-cart";button.type="button";button.dataset.product=p.slug;
+      info.append(title,desc,price,button);card.append(img,number,info);grid.appendChild(card);
+    }
+    const img=card.querySelector("img");if(img&&p.image_url){img.src=p.image_url;img.alt="Hambúrguer "+p.name;}
+    const title=card.querySelector(".menu-info h2"),description=card.querySelector(".menu-info p"),price=card.querySelector(".product-price"),button=card.querySelector("[data-product]");
+    if(title)title.textContent=p.name;
+    if(description)description.textContent=p.description||"Uma criação especial da casa.";
+    if(price)price.textContent=money(p.price_cents);
+    if(button){button.disabled=!p.is_available;button.setAttribute("aria-disabled",String(!p.is_available));button.innerHTML=p.is_available?'ADICIONAR AO CARRINHO <span>+</span>':'INDISPONÍVEL NO MOMENTO';}
+    card.style.display=p.is_available?"":"none";
+    grid.appendChild(card);
+    existing.delete(p.slug);
   });
-  window.forgeProducts=cards;
+  existing.forEach(card=>card.remove());
+  window.forgeProducts=new Map(products.map(p=>[p.slug,p]));
 })();
