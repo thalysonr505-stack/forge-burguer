@@ -743,3 +743,11 @@ input[type="button"]:not(:disabled):active{
  .menu-info p{min-height:62px;font-size:8px}
  .add-to-cart{min-height:32px;font-size:7px}
 }
+
+
+/* Desempenho do fundo do cardápio: imagem estática em telas móveis */
+@media(max-width:768px){
+  .menu-background-video{display:none!important}
+  .menu-section{background-image:linear-gradient(180deg,rgba(12,12,12,.62),rgba(12,12,12,.84)),url("../images/the-original.jpg");background-size:cover;background-position:center top;background-attachment:scroll}
+  .menu-section:after{display:none}
+}
