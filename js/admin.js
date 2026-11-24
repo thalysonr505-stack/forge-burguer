@@ -33,6 +33,8 @@ async function verifyStaff(){
   return false;
  }
  staff={...data,user};showDashboard();
+ productsTab.classList.toggle("admin-hidden",!["owner","manager"].includes(data.role));
+ if(!["owner","manager"].includes(data.role)){productsSection.classList.add("admin-hidden");}else{showAdminTab("orders");}
  document.getElementById("staff-greeting").textContent="Olá, "+data.display_name+" · Perfil: "+data.role.toUpperCase();
  return true;
 }
@@ -96,6 +98,73 @@ async function updateStatus(id,status,button){
   await loadOrders();
  }catch(error){message(dashboardMessage,error.message||"Não foi possível atualizar o pedido.");button.disabled=false;}
 };
+
+
+const productsTab=document.getElementById("products-tab");
+const productsSection=document.getElementById("products-section");
+const productsList=document.getElementById("products-list");
+const createProductForm=document.getElementById("product-create-form");
+const createProductMessage=document.getElementById("product-create-message");
+const adminTabs=[...document.querySelectorAll("[data-admin-tab]")];
+function showAdminTab(tab){
+ const isProducts=tab==="products";
+ document.querySelector(".admin-toolbar").classList.toggle("admin-hidden",isProducts);
+ document.getElementById("dashboard-message").classList.toggle("admin-hidden",isProducts);
+ ordersGrid.classList.toggle("admin-hidden",isProducts);
+ productsSection.classList.toggle("admin-hidden",!isProducts);
+ adminTabs.forEach(b=>b.classList.toggle("is-active",b.dataset.adminTab===tab));
+ if(isProducts)loadProducts();
+}
+adminTabs.forEach(b=>b.addEventListener("click",()=>showAdminTab(b.dataset.adminTab)));
+function productField(label,value,type="text"){
+ const wrap=document.createElement("label");wrap.textContent=label;
+ const input=document.createElement(type==="textarea"?"textarea":"input");
+ if(type!=="textarea")input.type=type;
+ if(type==="textarea")input.rows=2;
+ input.value=value??"";wrap.appendChild(input);return {wrap,input};
+}
+async function loadProducts(){
+ if(!staff||!["owner","manager"].includes(staff.role)){productsList.textContent="Seu perfil não tem permissão para gerenciar o cardápio.";return;}
+ productsList.textContent="Carregando produtos...";
+ const {data,error}=await client.from("products").select("id,slug,name,description,price_cents,image_url,is_available,sort_order").order("sort_order").order("name");
+ if(error){productsList.textContent=error.message;return;}
+ productsList.replaceChildren();
+ if(!data.length){productsList.textContent="Nenhum produto cadastrado.";return;}
+ data.forEach(product=>{
+  const row=document.createElement("form");row.className="product-row";
+  const name=productField("NOME",product.name);
+  const price=productField("PREÇO EM REAIS",(product.price_cents/100).toFixed(2),"number");price.input.min="0.01";price.input.max="9999";price.input.step="0.01";price.input.required=true;
+  const desc=productField("DESCRIÇÃO",product.description,"textarea");desc.wrap.classList.add("wide");
+  const image=productField("URL DA IMAGEM",product.image_url||"","url");image.wrap.classList.add("wide");
+  const slug=document.createElement("p");slug.className="admin-sub wide";slug.textContent="ID: "+product.slug;
+  const actions=document.createElement("div");actions.className="product-row-actions wide";
+  const availableLabel=document.createElement("label");availableLabel.className="availability-label";
+  const available=document.createElement("input");available.type="checkbox";available.checked=product.is_available;
+  availableLabel.append(available,document.createTextNode("Produto disponível no cardápio"));
+  const save=document.createElement("button");save.type="submit";save.className="admin-btn";save.textContent="SALVAR ALTERAÇÕES";
+  const feedback=document.createElement("p");feedback.className="admin-message wide";feedback.setAttribute("role","status");
+  actions.append(availableLabel,save);row.append(name.wrap,price.wrap,desc.wrap,image.wrap,slug,actions,feedback);
+  row.addEventListener("submit",async event=>{
+   event.preventDefault();save.disabled=true;feedback.textContent="Salvando...";
+   const parsed=Math.round(Number(price.input.value)*100);
+   if(!Number.isSafeInteger(parsed)||parsed<1){feedback.textContent="Informe um preço válido.";save.disabled=false;return;}
+   const {error}=await client.from("products").update({name:name.input.value.trim(),description:desc.input.value.trim(),price_cents:parsed,image_url:image.input.value.trim()||null,is_available:available.checked,updated_at:new Date().toISOString()}).eq("id",product.id);
+   if(error){feedback.textContent=error.message;save.disabled=false;return;}
+   feedback.textContent="Alterações salvas. O cardápio público já pode refletir os novos dados.";
+   save.disabled=false;
+  });
+  productsList.appendChild(row);
+ });
+}
+createProductForm.addEventListener("submit",async event=>{
+ event.preventDefault();if(!staff||!["owner","manager"].includes(staff.role))return;
+ const button=createProductForm.querySelector('button[type="submit"]');button.disabled=true;message(createProductMessage,"Cadastrando produto...");
+ const form=new FormData(createProductForm);const price=Math.round(Number(form.get("price"))*100);
+ if(!Number.isSafeInteger(price)||price<1){message(createProductMessage,"Informe um preço válido.");button.disabled=false;return;}
+ const {error}=await client.from("products").insert({slug:String(form.get("slug")).trim(),name:String(form.get("name")).trim(),description:String(form.get("description")||"").trim(),price_cents:price,image_url:String(form.get("image_url")||"").trim()||null,is_available:true,sort_order:100});
+ if(error){message(createProductMessage,error.message);button.disabled=false;return;}
+ createProductForm.reset();message(createProductMessage,"Produto cadastrado com sucesso.");button.disabled=false;loadProducts();
+});
 
 loginForm.addEventListener("submit", async event => {
  event.preventDefault();
