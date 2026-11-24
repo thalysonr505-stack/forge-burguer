@@ -83,6 +83,11 @@ async function loadOrders(){
  finally{busy=false;refreshButton.disabled=false;}
 }
 
+function startAutoRefresh(){
+ if(refreshTimer)window.clearInterval(refreshTimer);
+ refreshTimer=window.setInterval(()=>{if(!document.hidden&&staff&&!busy)loadOrders();},20000);
+}
+
 async function updateStatus(id,status,button){
  button.disabled=true;
  try{
@@ -111,6 +116,7 @@ loginForm.addEventListener("submit", async event => {
   message(loginMessage,"");
   busy=false;
   await loadOrders();
+  startAutoRefresh();
  }catch(error){
   message(loginMessage,error.message||"Falha ao entrar. Confira suas credenciais.");
  }finally{
@@ -134,7 +140,7 @@ statusFilter.addEventListener("change",loadOrders);
   const allowed=await verifyStaff();
   if(allowed){
    await loadOrders();
-   refreshTimer=window.setInterval(()=>{if(!document.hidden&&staff&&!busy)loadOrders();},20000);
+   startAutoRefresh();
   }
  }catch(error){
   showLogin();
