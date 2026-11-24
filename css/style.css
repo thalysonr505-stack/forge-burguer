@@ -703,3 +703,43 @@ input[type="button"]:not(:disabled):active{
 .hero-media:after{position:absolute;inset:0;z-index:1;content:"";pointer-events:none;background:linear-gradient(90deg,rgba(12,12,12,.94) 0%,rgba(12,12,12,.78) 36%,rgba(12,12,12,.22) 75%,rgba(12,12,12,.34) 100%),linear-gradient(0deg,rgba(12,12,12,.58),transparent 35%,rgba(12,12,12,.12))}
 .hero-content,.hero-bottom{position:relative;z-index:2}
 @media(max-width:768px){.hero-video{object-position:58% center}}
+
+
+/* CARDÁPIO — cards mais compactos para liberar espaço da seção */
+.menu-section{padding-bottom:72px}
+.menu-heading{min-height:175px;margin-bottom:22px}
+.menu-grid{max-width:1160px;gap:12px}
+.menu-card{border-radius:10px}
+.menu-card img{aspect-ratio:5/3;max-height:205px}
+.menu-info{padding:13px 14px 14px}
+.menu-info h2{margin-bottom:6px;font-size:clamp(13px,1.1vw,16px)}
+.menu-info p{min-height:48px;margin-bottom:8px;font-size:10px;line-height:1.45}
+.menu-info strong{padding-top:9px;font-size:16px}
+.add-to-cart{min-height:36px;margin-top:9px;font-size:9px}
+@media(max-width:1050px){
+ .menu-grid{gap:12px}
+ .menu-card img{max-height:185px}
+ .menu-info{padding:12px}
+ .menu-info p{min-height:44px;font-size:10px}
+}
+@media(max-width:768px){
+ .menu-section{padding:112px 5% 64px}
+ .menu-heading{min-height:155px;margin-bottom:18px}
+ .menu-heading h1{font-size:clamp(42px,10vw,62px);margin:12px 0}
+ .menu-heading p{font-size:11px}
+ .menu-heading-mark{margin-top:12px}
+ .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .menu-card{border-radius:8px}
+ .menu-card img{height:auto;max-height:none;aspect-ratio:1/1}
+ .menu-info{padding:10px 9px 11px}
+ .menu-info h2{font-size:11px;letter-spacing:.25px}
+ .menu-info p{min-height:58px;margin-bottom:7px;font-size:9px;line-height:1.4}
+ .menu-info strong{padding-top:8px;font-size:14px}
+ .add-to-cart{min-height:34px;margin-top:8px;font-size:8px;letter-spacing:.4px}
+}
+@media(max-width:380px){
+ .menu-info{padding:9px 8px}
+ .menu-info h2{font-size:10px}
+ .menu-info p{min-height:62px;font-size:8px}
+ .add-to-cart{min-height:32px;font-size:7px}
+}
