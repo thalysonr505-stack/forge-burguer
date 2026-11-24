@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/style.css?v=20261124h">
 <link rel="stylesheet" href="css/responsive.css?v=20261124a">
 <style>
+.admin-section-nav{display:flex;gap:10px;margin:24px 0 14px}.admin-tab{background:#292522;border:1px solid #51463d}.admin-tab.is-active{background:#c45b2a}.admin-section-title{font-size:clamp(24px,4vw,38px);margin-bottom:8px;letter-spacing:-1.5px}.product-editor{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0;padding:18px;background:#191817;border:1px solid #39332e}.product-editor label,.product-row label{display:grid;gap:7px;color:#c8bca8;font-size:10px;letter-spacing:.8px}.product-editor input,.product-editor textarea,.product-row input,.product-row textarea{width:100%;min-width:0;background:#171717;color:#eee;border:1px solid #51463d;padding:12px;font:inherit;font-size:13px}.product-editor label:nth-child(3),.product-editor label:nth-child(5),.product-editor button,.product-editor p{grid-column:1/-1}.products-list{display:grid;gap:12px}.product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px;background:#191817;border:1px solid #39332e}.product-row .wide{grid-column:1/-1}.product-row .product-row-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.product-row .availability-label{display:flex;align-items:center;gap:9px}.product-row input[type=checkbox]{width:18px;height:18px;accent-color:#c45b2a}.product-row .admin-btn{min-height:40px;padding:10px 15px}@media(max-width:600px){.admin-section-nav{display:grid;grid-template-columns:1fr 1fr}.product-editor,.product-row{grid-template-columns:1fr}.product-editor label,.product-editor button,.product-editor p,.product-row .wide{grid-column:auto}.product-row .product-row-actions{align-items:stretch;flex-direction:column}.product-row .admin-btn{width:100%}}
 .admin-page{min-height:100vh;background:#171717;color:#e9dfc9;padding:28px 5% 60px}
 .admin-wrap{width:min(1180px,100%);margin:auto}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid #39332e;padding-bottom:20px}
 .admin-brand{font-size:13px;letter-spacing:4px;color:#c45b2a}.admin-title{font-size:clamp(32px,6vw,54px);letter-spacing:-.06em;margin:34px 0 8px}.admin-sub{color:#aaa;font-size:13px;line-height:1.6}
@@ -100,8 +101,26 @@
 <p id="staff-greeting" class="admin-sub">Painel operacional</p>
 <div class="admin-toolbar"><div><strong>Pedidos recebidos</strong><p class="admin-sub">Atualização automática a cada 20 segundos enquanto o painel estiver aberto.</p></div><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
 <p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid" aria-live="polite"></div>
+<div class="admin-section-nav" aria-label="Seções do painel">
+<button type="button" class="admin-btn admin-tab is-active" data-admin-tab="orders">PEDIDOS</button>
+<button type="button" class="admin-btn admin-tab" data-admin-tab="products" id="products-tab">CARDÁPIO</button>
+</div>
+<section id="products-section" class="admin-card admin-hidden" aria-labelledby="products-title">
+ <h2 id="products-title" class="admin-section-title">GERENCIAR CARDÁPIO<span style="color:#c45b2a">.</span></h2>
+ <p class="admin-sub">Edite nomes, descrições, preços e disponibilidade. Alterações são refletidas no cardápio público.</p>
+ <form id="product-create-form" class="product-editor">
+  <label>IDENTIFICADOR ÚNICO<input name="slug" required maxlength="80" pattern="[a-z0-9-]+" placeholder="ex: forge-cheddar"></label>
+  <label>NOME DO PRODUTO<input name="name" required maxlength="120" placeholder="Nome do hambúrguer"></label>
+  <label>DESCRIÇÃO<textarea name="description" maxlength="500" rows="2" placeholder="Ingredientes e descrição"></textarea></label>
+  <label>PREÇO (R$)<input name="price" type="number" min="0.01" max="9999" step="0.01" required placeholder="29.90"></label>
+  <label>IMAGEM (URL HTTPS)<input name="image_url" type="url" placeholder="https://..."></label>
+  <button class="admin-btn" type="submit">ADICIONAR PRODUTO</button>
+  <p id="product-create-message" class="admin-message" role="status"></p>
+ </form>
+ <div id="products-list" class="products-list" aria-live="polite"></div>
+</section>
 </section>
 </div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js';"></script>
-<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=5"></script>
+<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=6"></script>
 </body></html>
