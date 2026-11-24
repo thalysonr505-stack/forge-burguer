@@ -694,3 +694,12 @@ input[type="button"]:not(:disabled):active{
  .header-actions{gap:4px}
  .header-button{padding:0 10px;font-size:7px}
 }
+
+
+/* Correção do hero: o vídeo deve preencher toda a altura, sem faixa cinza */
+.hero{position:relative;isolation:isolate;overflow:hidden;background:#101010}
+.hero-media{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;overflow:hidden;background:#101010}
+.hero-video{position:absolute;inset:0;display:block;width:100%!important;height:100%!important;min-width:100%;min-height:100%;max-width:none;object-fit:cover;object-position:center 54%;background:#101010}
+.hero-media:after{position:absolute;inset:0;z-index:1;content:"";pointer-events:none;background:linear-gradient(90deg,rgba(12,12,12,.94) 0%,rgba(12,12,12,.78) 36%,rgba(12,12,12,.22) 75%,rgba(12,12,12,.34) 100%),linear-gradient(0deg,rgba(12,12,12,.58),transparent 35%,rgba(12,12,12,.12))}
+.hero-content,.hero-bottom{position:relative;z-index:2}
+@media(max-width:768px){.hero-video{object-position:58% center}}
