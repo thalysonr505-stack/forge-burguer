@@ -56,7 +56,7 @@
   function render(data) {
     card.replaceChildren();
 
-    appendText(card, "div", "track-number", "ORDER #" + data.order_number);
+    appendText(card, "div", "track-number", "PEDIDO Nº " + data.order_number);
 
     if (data.status === "cancelled") {
       appendText(card, "div", "track-status", "PEDIDO CANCELADO");
