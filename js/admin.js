@@ -12,6 +12,7 @@ const statusFilter=document.getElementById("status-filter");
 const refreshButton=document.getElementById("refresh-button");
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v/100);
 const labels={pending:"RECEBIDO",confirmed:"CONFIRMADO",preparing:"EM PREPARO",ready:"PRONTO",out_for_delivery:"SAIU PARA ENTREGA",delivered:"ENTREGUE",cancelled:"CANCELADO"};
+const roleLabels={owner:"PROPRIETÁRIO",manager:"GERÊNCIA",kitchen:"COZINHA",attendant:"ATENDIMENTO"};
 const transitions={pending:["confirmed","cancelled"],confirmed:["preparing","cancelled"],preparing:["ready","cancelled"],ready:["out_for_delivery","delivered","cancelled"],out_for_delivery:["delivered","cancelled"]};
 let staff=null;
 let busy=false;
