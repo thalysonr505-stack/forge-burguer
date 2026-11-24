@@ -16,6 +16,7 @@ const roleLabels={owner:"PROPRIETÁRIO",manager:"GERÊNCIA",kitchen:"COZINHA",at
 const transitions={pending:["confirmed","cancelled"],confirmed:["preparing","cancelled"],preparing:["ready","cancelled"],ready:["out_for_delivery","delivered","cancelled"],out_for_delivery:["delivered","cancelled"]};
 let staff=null;
 let busy=false;
+let refreshTimer=null;
 
 
 function message(el,text){el.textContent=text||"";}
@@ -118,6 +119,7 @@ loginForm.addEventListener("submit", async event => {
 });
 
 logoutButton.addEventListener("click",async()=>{
+ if(refreshTimer){window.clearInterval(refreshTimer);refreshTimer=null;}
  logoutButton.disabled=true;
  try{await client.auth.signOut();staff=null;showLogin();message(loginMessage,"Sessão encerrada.");}
  catch(error){message(dashboardMessage,error.message||"Não foi possível sair.");}
@@ -130,10 +132,14 @@ statusFilter.addEventListener("change",loadOrders);
 (async()=>{
  try{
   const allowed=await verifyStaff();
-  if(allowed)await loadOrders();
+  if(allowed){
+   await loadOrders();
+   refreshTimer=window.setInterval(()=>{if(!document.hidden&&staff&&!busy)loadOrders();},20000);
+  }
  }catch(error){
   showLogin();
   message(loginMessage,error.message||"Não foi possível verificar a sessão.");
  }
 })();
+window.addEventListener("pagehide",()=>{if(refreshTimer)window.clearInterval(refreshTimer);},{once:true});
 })();
