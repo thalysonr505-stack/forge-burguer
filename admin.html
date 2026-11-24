@@ -99,12 +99,12 @@
 <section id="dashboard-section" class="admin-hidden">
 <h1 class="admin-title">CONTROLE<br>DE PEDIDOS<span style="color:#c45b2a">.</span></h1>
 <p id="staff-greeting" class="admin-sub">Painel operacional</p>
-<div class="admin-toolbar"><div><strong>Pedidos recebidos</strong><p class="admin-sub">Atualização automática a cada 20 segundos enquanto o painel estiver aberto.</p></div><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
-<p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid" aria-live="polite"></div>
 <div class="admin-section-nav" aria-label="Seções do painel">
 <button type="button" class="admin-btn admin-tab is-active" data-admin-tab="orders">PEDIDOS</button>
 <button type="button" class="admin-btn admin-tab" data-admin-tab="products" id="products-tab">CARDÁPIO</button>
 </div>
+<div class="admin-toolbar"><div><strong>Pedidos recebidos</strong><p class="admin-sub">Atualização automática a cada 20 segundos enquanto o painel estiver aberto.</p></div><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
+<p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid" aria-live="polite"></div>
 <section id="products-section" class="admin-card admin-hidden" aria-labelledby="products-title">
  <h2 id="products-title" class="admin-section-title">GERENCIAR CARDÁPIO<span style="color:#c45b2a">.</span></h2>
  <p class="admin-sub">Edite nomes, descrições, preços e disponibilidade. Alterações são refletidas no cardápio público.</p>
@@ -122,5 +122,5 @@
 </section>
 </div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js';"></script>
-<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=8"></script>
+<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=9"></script>
 </body></html>
