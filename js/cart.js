@@ -52,9 +52,9 @@
       const unit=document.createElement("span");unit.textContent=money(p.price_cents)+" cada";
       copy.append(name,unit);
       const controls=document.createElement("div");controls.className="cart-controls";
-      const remove=document.createElement("button");remove.type="button";remove.dataset.quantity="-1";remove.dataset.id=slug;remove.setAttribute("aria-label","Remove one "+p.name);remove.textContent="−";
+      const remove=document.createElement("button");remove.type="button";remove.dataset.quantity="-1";remove.dataset.id=slug;remove.setAttribute("aria-label","Remover uma unidade de "+p.name);remove.textContent="−";
       const amount=document.createElement("span");amount.textContent=String(qty);
-      const add=document.createElement("button");add.type="button";add.dataset.quantity="1";add.dataset.id=slug;add.setAttribute("aria-label","Add one "+p.name);add.textContent="+";
+      const add=document.createElement("button");add.type="button";add.dataset.quantity="1";add.dataset.id=slug;add.setAttribute("aria-label","Adicionar uma unidade de "+p.name);add.textContent="+";
       controls.append(remove,amount,add);
       const lineTotal=document.createElement("strong");lineTotal.className="cart-line-total";lineTotal.textContent=money(p.price_cents*qty);
       line.append(copy,controls,lineTotal);itemsEl.appendChild(line);
