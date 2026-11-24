@@ -582,3 +582,12 @@ input[type="button"]:not(:disabled):active{
 @media(prefers-reduced-motion:reduce){
   .menu-background-video{display:block}
 }
+
+
+/* CTA oficial de WhatsApp — página de contato */
+.contact-hero .whatsapp-hero-button{background:#25D366;border-color:#25D366;color:#10251a;box-shadow:0 8px 28px rgba(37,211,102,.16);gap:11px}
+.contact-hero .whatsapp-hero-button svg{width:19px;height:19px;fill:currentColor;flex:0 0 auto}
+.contact-hero .whatsapp-hero-button .whatsapp-arrow{font-size:15px;transition:transform .2s ease}
+.contact-hero .whatsapp-hero-button:hover{background:#1fbd5a;border-color:#1fbd5a;color:#07190e;box-shadow:0 10px 30px rgba(37,211,102,.28);transform:translateY(-2px)}
+.contact-hero .whatsapp-hero-button:hover .whatsapp-arrow{transform:translate(3px,-2px)}
+.contact-hero .whatsapp-hero-button:focus-visible{outline:2px solid #fff;outline-offset:4px}
