@@ -148,7 +148,10 @@ async function loadProducts(){
    event.preventDefault();save.disabled=true;feedback.textContent="Salvando...";
    const parsed=Math.round(Number(price.input.value)*100);
    if(!Number.isSafeInteger(parsed)||parsed<1){feedback.textContent="Informe um preço válido.";save.disabled=false;return;}
-   const {error}=await client.from("products").update({name:name.input.value.trim(),description:desc.input.value.trim(),price_cents:parsed,image_url:image.input.value.trim()||null,is_available:available.checked,updated_at:new Date().toISOString()}).eq("id",product.id);
+   const imageUrl=image.input.value.trim();
+   if(imageUrl&&!imageUrl.startsWith("https://")){feedback.textContent="A imagem precisa usar um endereço HTTPS.";save.disabled=false;return;}
+   if(!name.input.value.trim()){feedback.textContent="Informe o nome do produto.";save.disabled=false;return;}
+   const {error}=await client.from("products").update({name:name.input.value.trim(),description:desc.input.value.trim(),price_cents:parsed,image_url:imageUrl||null,is_available:available.checked,updated_at:new Date().toISOString()}).eq("id",product.id);
    if(error){feedback.textContent=error.message;save.disabled=false;return;}
    feedback.textContent="Alterações salvas. O cardápio público já pode refletir os novos dados.";
    save.disabled=false;
@@ -161,7 +164,9 @@ createProductForm.addEventListener("submit",async event=>{
  const button=createProductForm.querySelector('button[type="submit"]');button.disabled=true;message(createProductMessage,"Cadastrando produto...");
  const form=new FormData(createProductForm);const price=Math.round(Number(form.get("price"))*100);
  if(!Number.isSafeInteger(price)||price<1){message(createProductMessage,"Informe um preço válido.");button.disabled=false;return;}
- const {error}=await client.from("products").insert({slug:String(form.get("slug")).trim(),name:String(form.get("name")).trim(),description:String(form.get("description")||"").trim(),price_cents:price,image_url:String(form.get("image_url")||"").trim()||null,is_available:true,sort_order:100});
+ const imageUrl=String(form.get("image_url")||"").trim();
+ if(imageUrl&&!imageUrl.startsWith("https://")){message(createProductMessage,"A imagem precisa usar um endereço HTTPS.");button.disabled=false;return;}
+ const {error}=await client.from("products").insert({slug:String(form.get("slug")).trim(),name:String(form.get("name")).trim(),description:String(form.get("description")||"").trim(),price_cents:price,image_url:imageUrl||null,is_available:true,sort_order:100});
  if(error){message(createProductMessage,error.message);button.disabled=false;return;}
  createProductForm.reset();message(createProductMessage,"Produto cadastrado com sucesso.");button.disabled=false;loadProducts();
 });
