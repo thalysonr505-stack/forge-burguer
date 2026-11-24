@@ -481,7 +481,7 @@ input[type="button"]:not(:disabled):active{
   box-shadow:0 22px 48px rgba(0,0,0,.3),0 0 24px rgba(196,91,42,.06);
 }
 .menu-card img{
-  width:100%;height:clamp(230px,27vw,360px);object-fit:cover;
+  display:block;width:100%;height:clamp(230px,27vw,360px);aspect-ratio:16/10;object-fit:cover;object-position:center 50%;
   border-bottom:1px solid rgba(233,223,201,.1);
   transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s ease;
 }
@@ -564,23 +564,23 @@ input[type="button"]:not(:disabled):active{
 /* FUNDO CINEMATOGRAFICO — CARDAPIO FORGE */
 .menu-section{position:relative;isolation:isolate}
 .menu-background-video{
-  position:absolute;top:0;left:0;z-index:0;display:block;width:100%;height:560px;
-  object-fit:cover;object-position:center 48%;opacity:.96;
-  filter:saturate(1.12) contrast(1.04);pointer-events:none;
+  position:absolute;top:0;left:0;z-index:0;display:block;width:100%;height:480px;
+  object-fit:cover;object-position:center 48%;opacity:.58;
+  filter:saturate(1.04) contrast(1.08);pointer-events:none;
 }
 .menu-section:after{
   position:absolute;inset:0;z-index:1;content:"";
-  background:linear-gradient(180deg,rgba(12,12,12,.22) 0%,rgba(12,12,12,.34) 35%,rgba(12,12,12,.82) 66%,#151515 88%);
+  background:linear-gradient(180deg,rgba(12,12,12,.48) 0%,rgba(12,12,12,.56) 32%,rgba(12,12,12,.88) 68%,#151515 92%);
   pointer-events:none;
 }
 .menu-heading,.menu-grid{position:relative;z-index:2}
 .menu-heading{min-height:330px;align-items:center}
 @media(max-width:768px){
-  .menu-background-video{height:440px;object-position:55% center}
+  .menu-background-video{height:390px;object-position:55% center}
   .menu-heading{min-height:290px}
 }
 @media(prefers-reduced-motion:reduce){
-  .menu-background-video{display:block}
+  .menu-background-video{display:none}
 }
 
 
@@ -591,3 +591,11 @@ input[type="button"]:not(:disabled):active{
 .contact-hero .whatsapp-hero-button:hover{background:#1fbd5a;border-color:#1fbd5a;color:#07190e;box-shadow:0 10px 30px rgba(37,211,102,.28);transform:translateY(-2px)}
 .contact-hero .whatsapp-hero-button:hover .whatsapp-arrow{transform:translate(3px,-2px)}
 .contact-hero .whatsapp-hero-button:focus-visible{outline:2px solid #fff;outline-offset:4px}
+
+
+/* FORGE visual QA: consistent media framing and WhatsApp contrast */
+.menu-card img{background:#111;}
+.contact-hero .whatsapp-hero-button{color:#082b16;text-shadow:none;}
+.contact-hero .whatsapp-hero-button:hover{color:#061d10;}
+@media(max-width:768px){.menu-card img{height:clamp(210px,58vw,330px);aspect-ratio:16/10}.menu-background-video{height:390px}}
+@media(prefers-reduced-motion:reduce){.menu-background-video{display:none}}
