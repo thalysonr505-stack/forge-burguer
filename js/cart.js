@@ -74,10 +74,10 @@
   }
   if(!client){
     products={
-      original:{name:"THE ORIGINAL",price_cents:2990,is_available:true},
-      "double-forge":{name:"DOUBLE FORGE",price_cents:3990,is_available:true},
-      bacon:{name:"THE BACON",price_cents:3490,is_available:true},
-      truffle:{name:"THE TRUFFLE",price_cents:4290,is_available:true}
+      original:{name:"O ORIGINAL",price_cents:2990,is_available:true},
+      "double-forge":{name:"DUPLO FORGE",price_cents:3990,is_available:true},
+      bacon:{name:"BACON DA CASA",price_cents:3490,is_available:true},
+      truffle:{name:"TRUFA",price_cents:4290,is_available:true}
     };
   }
   for(const slug of Object.keys(cart)) {
