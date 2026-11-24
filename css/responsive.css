@@ -78,3 +78,13 @@
 @media(max-width:768px){
   .hero-video{width:100%;height:100%;object-fit:cover;object-position:58% center}
 }
+
+
+/* Responsive overrides for clean transparent header */
+@media(max-width:1024px){.header{padding-right:5%;padding-left:5%}}
+@media(max-width:768px){
+ .header{display:flex;grid-template-columns:none;row-gap:0}
+ .nav{display:none}
+ .hero{padding-top:100px}
+ .forge-page-hero{padding-top:100px}
+}
