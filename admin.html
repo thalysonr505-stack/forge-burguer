@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171717">
 <meta name="robots" content="noindex,nofollow">
 <title>FORGE® — Painel interno</title>
-<link rel="stylesheet" href="css/style.css?v=20261123n">
+<link rel="stylesheet" href="css/style.css?v=20261124d">
 <link rel="stylesheet" href="css/responsive.css?v=20261123l">
 <style>
 .admin-page{min-height:100vh;background:#171717;color:#e9dfc9;padding:28px 5% 60px}
@@ -86,22 +86,22 @@
 </head>
 <body>
 <main class="admin-page"><div class="admin-wrap">
-<header class="admin-top"><div class="admin-brand">FORGE® BURGER <span style="color:#777">/ OPERATIONS</span></div><button id="logout-button" class="admin-btn admin-hidden" type="button">SAIR</button></header>
+<header class="admin-top"><div class="admin-brand">FORGE® BURGER <span style="color:#777">/ OPERAÇÕES</span></div><button id="logout-button" class="admin-btn admin-hidden" type="button">SAIR</button></header>
 <section id="login-section" class="admin-card">
-<h1 class="admin-title">STAFF<br>ACCESS<span style="color:#c45b2a">.</span></h1>
-<p class="admin-sub">Acesso exclusivo à equipe autorizada da FORGE. Não existe cadastro público.</p>
+<h1 class="admin-title">ACESSO<br>DA EQUIPE<span style="color:#c45b2a">.</span></h1>
+<p class="admin-sub">Acesso restrito à equipe autorizada da FORGE. Não há cadastro público.</p>
 <form id="login-form" class="admin-form">
 <label for="staff-email">E-MAIL</label><input id="staff-email" name="email" type="email" autocomplete="username" required maxlength="254">
 <label for="staff-password">SENHA</label><input id="staff-password" name="password" type="password" autocomplete="current-password" required>
 <button class="admin-btn" type="submit">ENTRAR NO PAINEL</button><p id="login-message" class="admin-message" role="status"></p>
 </form></section>
 <section id="dashboard-section" class="admin-hidden">
-<h1 class="admin-title">ORDER<br>CONTROL<span style="color:#c45b2a">.</span></h1>
+<h1 class="admin-title">CONTROLE<br>DE PEDIDOS<span style="color:#c45b2a">.</span></h1>
 <p id="staff-greeting" class="admin-sub">Painel operacional</p>
 <div class="admin-toolbar"><strong>Pedidos recebidos</strong><div class="admin-filter"><select id="status-filter" aria-label="Filtrar pedidos"><option value="active">Em andamento</option><option value="all">Todos</option><option value="pending">Recebidos</option><option value="confirmed">Confirmados</option><option value="preparing">Em preparo</option><option value="ready">Prontos</option><option value="out_for_delivery">Saiu para entrega</option><option value="delivered">Entregues</option><option value="cancelled">Cancelados</option></select><button id="refresh-button" class="admin-btn" type="button">ATUALIZAR</button></div></div>
 <p id="dashboard-message" class="admin-message" role="status"></p><div id="orders-grid" class="order-grid" aria-live="polite"></div>
 </section>
 </div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js';"></script>
-<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=4"></script>
+<script src="js/supabase-client.js?v=1"></script><script src="js/admin.js?v=5"></script>
 </body></html>
