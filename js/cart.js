@@ -15,6 +15,12 @@
     if(saved && typeof saved==="object") cart=saved;
   } catch (_) { cart={}; }
   const money=value=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(value/100);
+  if(!client){
+    document.querySelectorAll("[data-product]").forEach(button=>{button.disabled=true;button.setAttribute("aria-disabled","true");button.textContent="INDISPONÍVEL";});
+    toast.textContent="Não foi possível conectar ao cardápio. Tente novamente em instantes.";
+    toast.classList.add("is-visible");
+    return;
+  }
   const quantity=()=>Object.values(cart).reduce((sum,qty)=>sum+(Number.isInteger(qty)&&qty>0?qty:0),0);
   const total=()=>Object.entries(cart).reduce((sum,[slug,qty])=>sum+(products[slug]?products[slug].price_cents*qty:0),0);
   const persist=()=>{try{localStorage.setItem(storageKey,JSON.stringify(cart));}catch(_){}};
@@ -33,7 +39,7 @@
     if(!entries.length){
       const empty=document.createElement("p");
       empty.className="cart-empty";
-      empty.textContent="Your bag is waiting. Add a Forge creation to begin.";
+      empty.textContent="Seu carrinho está vazio. Escolha um Forge para começar.";
       itemsEl.appendChild(empty);
       return;
     }
@@ -42,7 +48,7 @@
       const line=document.createElement("article");line.className="cart-line";
       const copy=document.createElement("div");copy.className="cart-line-copy";
       const name=document.createElement("strong");name.textContent=p.name;
-      const unit=document.createElement("span");unit.textContent=money(p.price_cents)+" each";
+      const unit=document.createElement("span");unit.textContent=money(p.price_cents)+" cada";
       copy.append(name,unit);
       const controls=document.createElement("div");controls.className="cart-controls";
       const remove=document.createElement("button");remove.type="button";remove.dataset.quantity="-1";remove.dataset.id=slug;remove.setAttribute("aria-label","Remove one "+p.name);remove.textContent="−";
@@ -62,7 +68,7 @@
     else {
       console.error("FORGE cart catalog:",error.message);
       document.querySelectorAll("[data-product]").forEach(button=>{button.disabled=true;});
-      showToast("MENU TEMPORARILY UNAVAILABLE");
+      showToast("CARDÁPIO INDISPONÍVEL");
     }
   }
   if(!client){
@@ -94,10 +100,10 @@
     event.preventDefault();
     const message=document.getElementById("checkout-message");
     const submit=document.getElementById("checkout-submit");
-    if(!client){message.textContent="Order service unavailable. Please try again shortly.";return;}
+    if(!client){message.textContent="Serviço de pedidos indisponível. Tente novamente em instantes.";return;}
     const items=Object.entries(cart).filter(([slug,qty])=>products[slug]&&qty>0).map(([slug,quantity])=>({slug,quantity}));
-    if(!items.length){message.textContent="Add an item before placing your order.";return;}
-    submit.disabled=true;submit.dataset.submitting="true";submit.textContent="SENDING ORDER...";message.textContent="";
+    if(!items.length){message.textContent="Adicione um item antes de finalizar o pedido.";return;}
+    submit.disabled=true;submit.dataset.submitting="true";submit.textContent="ENVIANDO PEDIDO...";message.textContent="";
     const f=new FormData(checkoutForm);
     const payload={p_customer_name:f.get("customer_name"),p_customer_phone:f.get("customer_phone"),p_fulfillment:f.get("fulfillment"),p_payment_method:f.get("payment_method"),p_items:items,p_delivery_address:f.get("delivery_address")||null,p_delivery_reference:f.get("delivery_reference")||null,p_table_code:f.get("table_code")||null,p_notes:f.get("notes")||null};
     try{
@@ -107,15 +113,15 @@
       cart={};persist();render();
       const url=new URL("track.html",window.location.href);
       url.searchParams.set("order",result.order_number);url.searchParams.set("token",result.tracking_token);
-      message.textContent="Order #"+result.order_number+" placed. Opening tracking...";
+      message.textContent="Pedido #"+result.order_number+" realizado. Abrindo acompanhamento...";
       window.location.href=url.toString();
-    }catch(error){message.textContent=error.message||"Could not place order. Please try again.";delete submit.dataset.submitting;submit.disabled=quantity()===0;submit.textContent="PLACE ORDER";}
+    }catch(error){message.textContent=error.message||"Não foi possível realizar o pedido. Confira os dados e tente novamente.";delete submit.dataset.submitting;submit.disabled=quantity()===0;submit.textContent="FINALIZAR PEDIDO";}
   });
   document.addEventListener("click",event=>{
     const add=event.target.closest("[data-product]");
     if(add){
       const slug=add.dataset.product,p=products[slug];
-      if(p&&p.is_available){cart[slug]=Math.min((cart[slug]||0)+1,30);persist();render();showToast(p.name+" ADDED TO YOUR ORDER");}
+      if(p&&p.is_available){cart[slug]=Math.min((cart[slug]||0)+1,30);persist();render();showToast(p.name+" ADICIONADO AO CARRINHO");}
     }
     const qty=event.target.closest("[data-quantity]");
     if(qty){const slug=qty.dataset.id;cart[slug]=Math.max(0,Math.min(30,(cart[slug]||0)+Number(qty.dataset.quantity)));if(!cart[slug])delete cart[slug];persist();render();}
